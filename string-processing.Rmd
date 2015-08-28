@@ -18,7 +18,7 @@ This tutorial covers tools for manipulating text data in R and Python, including
 
 In the future, a screencast of the material may accompany this document.
 
-We'll use a virtual machine developed here at Berkeley, the [Berkeley Common Environment (BCE)](http://bce.berkeley.edu). BCE is a virtual Linux machine - basically it is a Linux computer that you can run within your own computer, regardless of whether you are using Windows, Mac, or Linux. This provides a common environment so that things behave the same for all of us. 
+We'll use a virtual machine developed here at Berkeley, the [Berkeley Common Environment (BCE)](http://bce.berkeley.edu). BCE is a virtual Linux machine - basically it is a Linux computer that you can run within your own computer, regardless of whether you are using Windows, Mac, or Linux. This provides a common environment so that things behave the same for all of us.  However, if you have a standard R or Python installation and can install *stringr* for R and *re* for Python, that should work too.
 
 This tutorial assumes you have a working knowledge of R or Python. 
 
