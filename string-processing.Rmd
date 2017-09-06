@@ -16,9 +16,7 @@ read_chunk('string-processing.py')
 
 This tutorial covers tools for manipulating text data in R and Python, including the use of regular expressions. We also briefly discuss tools for reading and manipulating formatted text files such as HTML, XML, and JSON. At the moment, this tutorial is somewhat more focused on R than Python, but we hope to flesh out the Python sections more fully in the future.
 
-In the future, a screencast of the material may accompany this document.
-
-We'll use a virtual machine developed here at Berkeley, the [Berkeley Common Environment (BCE)](http://bce.berkeley.edu). BCE is a virtual Linux machine - basically it is a Linux computer that you can run within your own computer, regardless of whether you are using Windows, Mac, or Linux. This provides a common environment so that things behave the same for all of us.  However, if you have a standard R or Python installation and can install *stringr* for R and *re* for Python, that should work too.
+This tutorial was developed using a virtual machine developed here at Berkeley, the [Berkeley Common Environment (BCE)](http://bce.berkeley.edu). BCE is a virtual Linux machine - basically it is a Linux computer that you can run within your own computer, regardless of whether you are using Windows, Mac, or Linux. This provides a common environment so that things behave the same for all of us. However, BCE has not been updated in a while, and if you have a standard R or Python installation and can install the *stringr* package for R and the *re* package for Python, that should work too.
 
 This tutorial assumes you have a working knowledge of R or Python. 
 
@@ -120,7 +118,7 @@ wrappers for *grep*, *gsub*, *gregexpr*, etc.
 | str_extract/str_extract_all       |                  detects pattern, returning matches
 | str_replace/str_replace_all       |                  detects pattern and replaces matches
 
-The analogue of *regexpr* vs. *gregexpr* and *sub*
+The analog of *regexpr* vs. *gregexpr* and *sub*
 vs. *gsub* is that most of the functions have versions that
 return all the matches, not just the first match, e.g. *str_locate_all*
 *str_extract_all*, etc. Note that the *_all* functions return
@@ -182,7 +180,7 @@ Regular expressions are good for tasks such as:
  -  mining text by treating documents as data; and
  -  scraping the web for data.
 
-Please look at Section 3 of [our tutorial on using the bash shell](http://statistics.berkeley.edu/computing/training/tutorials) to learn the regular expression syntax that we'll use in the remainder of this tutorial. For other resources, Duncan Temple Lang (UC Davis Statistics)
+Please look at Section 3 of [our tutorial on using the bash shell](https://github.com/berkeley-scf/tutorial-using-bash) to learn the regular expression syntax that we'll use in the remainder of this tutorial. For other resources, Duncan Temple Lang (UC Davis Statistics)
 has written a nice tutorial that is part of the repository for this tutorial 
 or check out Sections 9.9 and 11 of [Paul Murrell's book](http://www.stat.auckland.ac.nz/~paul/ItDT)
 
@@ -333,6 +331,6 @@ For reasons explained in the [re documentation](https://docs.python.org/2/howto/
 
 There are lots of packages in both R and Python for downloading, reading in, and parsing formatted text files, such as HTML, XML, and JSON, as well as for submitting HTTP requests. So make sure you don't reinvent the wheel of what is already out there. 
 
-For R, some useful packages are *httr* and *RCurl* are good for interacting with webpages and *XML* for reading/parsing HTML and XML files. *jsonlite* is good for reading/parsing JSON. See the [WebTechnologies CRAN task view](https://cran.r-project.org/web/views/WebTechnologies.html) for a summary.
+For R, *httr* and *RCurl* are good for interacting with webpages and *XML* for reading/parsing HTML and XML files. *jsonlite* is good for reading/parsing JSON. See the [WebTechnologies CRAN task view](https://cran.r-project.org/web/views/WebTechnologies.html) for a summary.
 
 For Python, the *requests* module is good for interacting with webpages. For XML and HTML, *lxml* is good, in particular *lxml.etree* and *lxml.html*.  For HTML, one might also use *HTMLParser* in Python 2.7 and *html.parser* in Python 3, and for XML there is also the *xml* module. *json* is good for reading/parsing JSON files.

@@ -211,9 +211,7 @@ hr {
 
 <p>This tutorial covers tools for manipulating text data in R and Python, including the use of regular expressions. We also briefly discuss tools for reading and manipulating formatted text files such as HTML, XML, and JSON. At the moment, this tutorial is somewhat more focused on R than Python, but we hope to flesh out the Python sections more fully in the future.</p>
 
-<p>In the future, a screencast of the material may accompany this document.</p>
-
-<p>We&#39;ll use a virtual machine developed here at Berkeley, the <a href="http://bce.berkeley.edu">Berkeley Common Environment (BCE)</a>. BCE is a virtual Linux machine - basically it is a Linux computer that you can run within your own computer, regardless of whether you are using Windows, Mac, or Linux. This provides a common environment so that things behave the same for all of us.  However, if you have a standard R or Python installation and can install <em>stringr</em> for R and <em>re</em> for Python, that should work too.</p>
+<p>This tutorial was developed using a virtual machine developed here at Berkeley, the <a href="http://bce.berkeley.edu">Berkeley Common Environment (BCE)</a>. BCE is a virtual Linux machine - basically it is a Linux computer that you can run within your own computer, regardless of whether you are using Windows, Mac, or Linux. This provides a common environment so that things behave the same for all of us. However, BCE has not been updated in a while, and if you have a standard R or Python installation and can install the <em>stringr</em> package for R and the <em>re</em> package for Python, that should work too.</p>
 
 <p>This tutorial assumes you have a working knowledge of R or Python. </p>
 
@@ -393,7 +391,7 @@ wrappers for <em>grep</em>, <em>gsub</em>, <em>gregexpr</em>, etc.</p>
 </tr>
 </tbody></table>
 
-<p>The analogue of <em>regexpr</em> vs. <em>gregexpr</em> and <em>sub</em>
+<p>The analog of <em>regexpr</em> vs. <em>gregexpr</em> and <em>sub</em>
 vs. <em>gsub</em> is that most of the functions have versions that
 return all the matches, not just the first match, e.g. <em>str_locate_all</em>
 <em>str_extract_all</em>, etc. Note that the <em>_all</em> functions return
@@ -407,7 +405,8 @@ specify additional arguments, such as <em>ignore_case</em> or others listed unde
 <p>Here&#39;s an example:</p>
 
 <pre><code class="r">library(stringr)
-str &lt;- c(&quot;Apple&quot;, &quot;Basic&quot;, &quot;applied&quot;)
+str &lt;- c(&quot;Apple&quot;, &quot;Basic&quot;, &quot;applied apple&quot;)
+
 str_locate(str, fixed(&quot;app&quot;, ignore_case = TRUE))
 </code></pre>
 
@@ -415,6 +414,22 @@ str_locate(str, fixed(&quot;app&quot;, ignore_case = TRUE))
 ## [1,]     1   3
 ## [2,]    NA  NA
 ## [3,]     1   3
+</code></pre>
+
+<pre><code class="r">str_locate_all(str, fixed(&quot;app&quot;, ignore_case = TRUE))
+</code></pre>
+
+<pre><code>## [[1]]
+##      start end
+## [1,]     1   3
+## 
+## [[2]]
+##      start end
+## 
+## [[3]]
+##      start end
+## [1,]     1   3
+## [2,]     9  11
 </code></pre>
 
 <pre><code class="r">str_locate(str, &quot;a{1}[a-z]{2}&quot;)
@@ -503,7 +518,7 @@ Regular expressions are good for tasks such as:</p>
 <li> scraping the web for data.</li>
 </ul>
 
-<p>Please look at Section 3 of <a href="http://statistics.berkeley.edu/computing/training/tutorials">our tutorial on using the bash shell</a> to learn the regular expression syntax that we&#39;ll use in the remainder of this tutorial. For other resources, Duncan Temple Lang (UC Davis Statistics)
+<p>Please look at Section 3 of <a href="https://github.com/berkeley-scf/tutorial-using-bash">our tutorial on using the bash shell</a> to learn the regular expression syntax that we&#39;ll use in the remainder of this tutorial. For other resources, Duncan Temple Lang (UC Davis Statistics)
 has written a nice tutorial that is part of the repository for this tutorial 
 or check out Sections 9.9 and 11 of <a href="http://www.stat.auckland.ac.nz/%7Epaul/ItDT">Paul Murrell&#39;s book</a></p>
 
@@ -606,7 +621,7 @@ str_detect(text, &quot;^[[:upper:]]&quot;) # text starting with upper case lette
 </code></pre>
 
 <pre><code class="r">## grep(&quot;^[[:upper:]]&quot;, text) 
-str_detect(text, &quot;e$&quot;) # text with a number at the end
+str_detect(text, &quot;e$&quot;) # text with an &quot;e&quot; at the end
 </code></pre>
 
 <pre><code>## [1] FALSE  TRUE FALSE
@@ -885,7 +900,7 @@ print( m.group() )
 
 <p>There are lots of packages in both R and Python for downloading, reading in, and parsing formatted text files, such as HTML, XML, and JSON, as well as for submitting HTTP requests. So make sure you don&#39;t reinvent the wheel of what is already out there. </p>
 
-<p>For R, some useful packages are <em>httr</em> and <em>RCurl</em> are good for interacting with webpages and <em>XML</em> for reading/parsing HTML and XML files. <em>jsonlite</em> is good for reading/parsing JSON. See the <a href="https://cran.r-project.org/web/views/WebTechnologies.html">WebTechnologies CRAN task view</a> for a summary.</p>
+<p>For R, <em>httr</em> and <em>RCurl</em> are good for interacting with webpages and <em>XML</em> for reading/parsing HTML and XML files. <em>jsonlite</em> is good for reading/parsing JSON. See the <a href="https://cran.r-project.org/web/views/WebTechnologies.html">WebTechnologies CRAN task view</a> for a summary.</p>
 
 <p>For Python, the <em>requests</em> module is good for interacting with webpages. For XML and HTML, <em>lxml</em> is good, in particular <em>lxml.etree</em> and <em>lxml.html</em>.  For HTML, one might also use <em>HTMLParser</em> in Python 2.7 and <em>html.parser</em> in Python 3, and for XML there is also the <em>xml</em> module. <em>json</em> is good for reading/parsing JSON files.</p>
 

@@ -27,8 +27,11 @@ str_sub(vars, 2, 3) <- 'ZZ'
 
 ## @knitr stringr-example
 library(stringr)
-str <- c("Apple", "Basic", "applied")
+str <- c("Apple", "Basic", "applied apple")
+
 str_locate(str, fixed("app", ignore_case = TRUE))
+str_locate_all(str, fixed("app", ignore_case = TRUE))
+
 str_locate(str, "a{1}[a-z]{2}")
 
 ## @knitr detect1
@@ -56,7 +59,7 @@ str_replace_all(text, "^j", "J")
 text <- c("john","jennifer Pierce","Juan carlos rey")
 str_detect(text, "^[[:upper:]]") # text starting with upper case letter
 ## grep("^[[:upper:]]", text) 
-str_detect(text, "e$") # text with a number at the end
+str_detect(text, "e$") # text with an "e" at the end
 ## grep("e$", text) 
 
 ## @knitr repetitions
