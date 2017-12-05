@@ -210,7 +210,7 @@ their *stringr* analogs are more powerful when used with regular
 expressions. In the following examples, we'll illustrate usage of *stringr* functions, but 
 with their base R analogs as comments.
 
-First let's see the use of character sets and characters classes.
+First let's see the use of character sets and character classes.
 
 ```{r, detect1}
 ```
@@ -228,7 +228,9 @@ Next let's consider location-specific matches.
 
 Now let's make use of repetitions.
 
-Here's a search for US/Canadian/Caribbean phone numbers: 
+Let's search for US/Canadian/Caribbean phone numbers in the example text we've been using: 
+
+
 ```{r, repetitions}
 ```
 
@@ -241,12 +243,16 @@ For example, the phone number detection problem could have been done a bit more 
 ```{r, grouping}
 ```
 
+Challenge: the above pattern would actually match something that is not a valid phone number. What can go wrong?
+
+Here's a basic example of using grouping with the OR operator.
+
 ```{r, grouping2}
 ```
 
 
 
-And reference back to a detected pattern when doing a replacement.
+And reference back to a detected pattern when doing a replacement. Here we'll remove commas not used as field separators.
 
 ```{r, references}
 ```
@@ -291,9 +297,6 @@ In Python, you apply a matching function and then query the result to get inform
 ```
 
 ```{r, py-search2, engine='python'}
-```
-
-```{r, py-search3, engine='python'}
 ```
 
 To ignore case, do the following:

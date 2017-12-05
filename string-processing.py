@@ -7,14 +7,14 @@ print( out.split(' ') )
 
 ## @knitr py-substrings 
 
-var = "HCA24"
-print( var[1:3] )
+var = "13:47:00"
+print( var[3:5] )
 
 ## @knitr py-lists
 
-var = list("HCA24")
+var = list("13:47:00")
 print( var )
-var[1:3] = ["Z", "Z"]
+var[0:2] = ["0", "1"]
 print( ''.join(var) )
 
 
@@ -28,9 +28,9 @@ print( [v.find('98') for v in vars] )
 
 ## @knitr py-search
 import re
-addresses = ["john@att.com", "stat243@bspace.berkeley.edu", 
-  "john_smith3@att.com"]
-m = re.search("[\d_]+", addresses[1])
+text = ["Here's my number: 919-543-3300.", "hi John, good to meet you",
+          "They bought 731 bananas", "Please call 919.554.3800"]
+m = re.search("\d+", text[0])
 print( m.group() )
 print( m.start() )
 print( m.end() )
@@ -38,17 +38,10 @@ print( m.span() )
  
 ## @knitr py-search2
 import re
-addresses = ["john@att.com", "stat243@bspace.berkeley.edu", 
-  "john_smith3@att.com"]
-m = re.search("[\d_]+", addresses[2])
-print( m.group() )
-print( m.start() )
+text = ["Here's my number: 919-543-3300.", "hi John, good to meet you",
+          "They bought 731 bananas", "Please call 919.554.3800"]
+print( re.findall("\d+", text[0]) )
 
-## @knitr py-search3
-import re
-addresses = ["john@att.com", "stat243@bspace.berkeley.edu", 
-  "john_smith3@att.com"]
-print( re.findall("[\d_]+", addresses[2]) )
 
 ## @knitr py-ignore-case
 
@@ -60,8 +53,8 @@ print( re.findall("hat", str, re.IGNORECASE) )
 ## @knitr py-list-comp
 
 import re
-addresses = ["john@att.com", "stat243@bspace.berkeley.edu", 
-  "john_smith3@att.com"]
+text = ["Here's my number: 919-543-3300.", "hi John, good to meet you",
+          "They bought 731 bananas", "Please call 919.554.3800"]
 
 def return_group(pattern, txt):
     m = re.search(pattern, txt)
@@ -70,16 +63,15 @@ def return_group(pattern, txt):
     else:
        return(None)
 
-print( [return_group("[\d_]+", txt) for txt in addresses] )
-
+print( [return_group("\d+", str) for str in text] )
 
 
 ## @knitr py-replace1
 
 import re
-text = ["john","holly pierce","Juan carlos rey"]
-print( re.sub("^j", "J", text[0]) )
-print( re.sub("^j", "J", text[1]) )
+text = ["Here's my number: 919-543-3300.", "hi John, good to meet you",
+          "They bought 731 bananas", "Please call 919.554.3800"]
+print( re.sub("\d", "Z", text[0]) )
 
 
 ## @knitr py-replace2
@@ -99,8 +91,9 @@ print( re.sub("<.*?>", "", text) )
 ## @knitr py-compile
 
 import re
-addresses = ["john@att.com", "stat243@bspace.berkeley.edu", "john_smith3@att.com"]
+text = ["Here's my number: 919-543-3300.", "hi John, good to meet you",
+          "They bought 731 bananas", "Please call 919.554.3800"]
 p = re.compile('\d+')
-m = p.search(addresses[1])
+m = p.search(text[0])
 print( m.group() )
 

@@ -6,9 +6,11 @@ nchar(out)
 
 
 ## @knitr r-basics2
-vars <- c("P", "HCA24", "SOH02")
-substring(vars, 2, 3)
-substring(vars, 2, 3) <- 'ZZ'
+times <- c("04:18:04", "12:12:53", "13:47:00")
+substring(times, 7, 8)
+
+substring(times[3], 1, 2) <- '01'   ## replacement
+times
 
 ## @knitr r-pattern
 vars <- c("date98", "size98", "x98weights98", "sdfsd")
@@ -17,14 +19,6 @@ gregexpr("98", vars)
 gsub("98", "04", vars)
 
 
-## @knitr stringr-basics 
-out <- str_c("My", "name", "is", "Chris", ".", sep = " ")
-str_c(c("My", "name", "is", "Chris", "."), collapse = " ") # equivalent
-str_split(out, pattern = ' ')
-vars <- c("P", "HCA24", "SOH02")
-str_sub(vars, 2, 3)
-str_sub(vars, 2, 3) <- 'ZZ'
-
 ## @knitr stringr-example
 library(stringr)
 str <- c("Apple", "Basic", "applied apple")
@@ -32,35 +26,38 @@ str <- c("Apple", "Basic", "applied apple")
 str_locate(str, fixed("app", ignore_case = TRUE))
 str_locate_all(str, fixed("app", ignore_case = TRUE))
 
-str_locate(str, "a{1}[a-z]{2}")
+str_locate(str, "a{1}[a-z]{2}") ## regular expression: 'a' then exactly two lower-case letters
 
 ## @knitr detect1
 
-addresses <- c("john@att.com", "stat243@bspace.berkeley.edu", "john_smith@att.com")
-str_detect(addresses, "[[:digit:]_]")
-## grep("[[:digit:]_]", addresses, perl = TRUE)
+text <- c("Here's my number: 919-543-3300.", "hi John, good to meet you",
+          "They bought 731 bananas", "Please call 919.554.3800")
+str_detect(text, "[[:digit:]]")
 
+## grep("[[:digit:]]", text, perl = TRUE)
 
 ## @knitr detect2
 
-text <- c("john","jennifer Pierce","Juan carlos rey")
-str_detect(text, "[ \t]")
-## grep("[ \t]", text)
-str_locate_all(text, "[ \t]")
-## gregexpr("[ \t]", text)
-str_extract_all(text, "^[[:upper:]][[:lower:]]+ ")
-## matches <- gregexpr("^[[:upper:]][[:lower:]]+ ", text)
+str_detect(text, "[:,\t\\.]")
+## grep("[:,\t]", text)
+
+str_locate_all(text, "[:,\t\\.]")
+## gregexpr("[:,\t\\.]", text)
+
+str_extract_all(text, "[[:digit:]]+")
+## matches <- gregexpr("[[:digit]]+", text)
 ## regmatches(text, matches)
-str_replace_all(text, "^j", "J")
-## gsub("^j", "J", text)
+
+str_replace_all(text, "[[:digit:]]", "Z")
+## gsub("[[:digit:]]", "Z", text)
+
 
 ## @knitr location
-
-text <- c("john","jennifer Pierce","Juan carlos rey")
 str_detect(text, "^[[:upper:]]") # text starting with upper case letter
 ## grep("^[[:upper:]]", text) 
-str_detect(text, "e$") # text with an "e" at the end
-## grep("e$", text) 
+
+str_detect(text, "[[:digit:]]$") # text with a digit
+## grep("[[:digit:]]$", text) 
 
 ## @knitr repetitions
 
@@ -68,7 +65,6 @@ text <- c("Here's my number: 919-543-3300.", "hi John, good to meet you",
           "They bought 731 bananas", "Please call 919.554.3800")
 pattern <- "[[:digit:]]{3}[-\\.][[:digit:]]{3}[-\\.][[:digit:]]{4}"
 str_extract_all(text, pattern)
-
 ## matches <- gregexpr(pattern, text)
 ## regmatches(text, matches)
 
@@ -76,7 +72,6 @@ str_extract_all(text, pattern)
 ## @knitr grouping
 str_extract_all(text, "(1[-\\.])?([[:digit:]]{3}[-\\.]){1,2}[[:digit:]]{4}")
 ## matches <- gregexpr("(1[-\\.])?([[:digit:]]{3}[-\\.]){1,2}[[:digit:]]{4}", text)
-
 ## regmatches(text, matches)
 
 ## @knitr grouping2
