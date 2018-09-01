@@ -102,11 +102,11 @@ print( m.group() )
 strings = ["Hello", "Hello.", "Hello\nthere", "Hello\\nthere"]
 print(strings[2])
 print(strings[3])     
-re.search(".", strings[0])     ## . means any character
-re.search("\.", strings[0])    ## \. escapes the period and treats it literally
-re.search("\.", strings[1])    ## \. escapes the period and treats it literally
-re.search("\n", strings[2])    ## \n looks for the special symbol \n
-re.search("\n", strings[3])    ## \n looks for the special symbol \n
-re.search("\\\\", strings[3])  ## string parser removes two \ to give \\;
-                               ## then in regex \\ treats second \ literally
+print(re.search(".", strings[0]))    ## . means any character
+print(re.search("\.", strings[0]))   ## \. escapes the period and treats it literally
+print(re.search("\.", strings[1]))   ## \. escapes the period and treats it literally
+print(re.search("\n", strings[2]))   ## \n looks for the special symbol \n
+print(re.search("\n", strings[3]))   ## \n looks for the special symbol \n
+print(re.search("\\\\", strings[3])) ## string parser removes two \ to give \\;
+                                     ## then in regex \\ treats second \ literally
 

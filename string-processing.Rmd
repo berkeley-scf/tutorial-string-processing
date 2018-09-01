@@ -16,9 +16,9 @@ read_chunk('string-processing.py')
 
 This tutorial covers tools for manipulating text data in R and Python, including the use of regular expressions. We also briefly discuss tools for reading and manipulating formatted text files such as HTML, XML, and JSON. At the moment, this tutorial is somewhat more focused on R than Python, but we hope to flesh out the Python sections more fully in the future.
 
-This tutorial was originally developed using a virtual machine developed here at Berkeley, the [Berkeley Common Environment (BCE)](http://bce.berkeley.edu). BCE is a virtual Linux machine - basically it is a Linux computer that you can run within your own computer, regardless of whether you are using Windows, Mac, or Linux. This provides a common environment so that things behave the same for all of us.
+If you have a standard R or Python installation and can install the *stringr* package for R and the *re* package for Python, you should be able to reproduce the results in this document.
 
-However, BCE has not been updated in a while, and if you have a standard R or Python installation and can install the *stringr* package for R and the *re* package for Python, that should work too.
+This tutorial was originally developed using a virtual machine developed here at Berkeley, the [Berkeley Common Environment (BCE)](http://bce.berkeley.edu). BCE is a virtual Linux machine - basically it is a Linux computer that you can run within your own computer, regardless of whether you are using Windows, Mac, or Linux. This provides a common environment so that things behave the same for all of us. However, BCE has not been updated in a while, so I don't suggest you use it at this point in time.
 
 This tutorial assumes you have a working knowledge of R or Python. 
 

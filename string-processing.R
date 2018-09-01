@@ -117,13 +117,12 @@ str_split(line, "[[:blank:]]+")
 ## last case here is literally a backslash and then 'n'
 strings <- c("Hello", "Hello.", "Hello\nthere", "Hello\\nthere")
 cat(strings, sep = "\n")
-str_detect(strings, ".")     ## . means any character
-str_detect(strings, "\.")    ## \. looks for the special symbol \.
-str_detect(strings, "\\.")   ## \\ says treat \ literally, which then escapes the .
-str_detect(strings, "\n")    ## \n looks for the special symbol \n
-str_detect(strings, "\\")    ## \\ says treat \ literally, but \ is not meaningful regex
-str_detect(strings, "\\\\")  ## R parser removes two \ to give \\;
-                             ## then in regex \\ treats second \ literally
+str_detect(strings, ".")           ## . means any character
+## str_detect(strings, "\.")       ## \. looks for the special symbol \.
+str_detect(strings, "\\.")         ## \\ says treat \ literally, which then escapes the .
+str_detect(strings, "\n")          ## \n looks for the special symbol \n
+## str_detect(strings, "\\")       ## \\ says treat \ literally, but \ is not meaningful regex
+str_detect(strings, "\\\\")        ## R parser removes two \ to give \\; then in regex \\ treats second \ literally
                              
 
 
