@@ -13,20 +13,21 @@ substring(times[3], 1, 2) <- '01'   ## replacement
 times
 
 ## @knitr r-pattern
-vars <- c("date98", "size98", "x98weights98", "sdfsd")
-grep("98", vars)
-gregexpr("98", vars)
-gsub("98", "04", vars)
+dates <- c("2016-08-03", "2007-09-05", "2016-01-02")
+grep("2016", dates)
+gregexpr("2016", dates)
+gsub("2016", "16", dates)
 
 
 ## @knitr stringr-example
 library(stringr)
-str <- c("Apple", "Basic", "applied apple")
+str <- c("Apple Computer", "IBM", "Apple apps")
 
 str_locate(str, fixed("app", ignore_case = TRUE))
 str_locate_all(str, fixed("app", ignore_case = TRUE))
 
-str_locate(str, "a{1}[a-z]{2}") ## regular expression: 'a' then exactly two lower-case letters
+dates <- c("2016-08-03", "2007-09-05", "2016-01-02")
+str_locate(dates, "20[^0][0-9]") ## regular expression: years begin in 2010
 
 ## @knitr detect1
 
@@ -76,8 +77,8 @@ str_extract_all(text, "(1[-\\.])?([[:digit:]]{3}[-\\.]){1,2}[[:digit:]]{4}")
 
 ## @knitr grouping2
 text <- c("at the site http://www.ibm.com", "other text", "ftp://ibm.com")
-str_locate(text, "(http|ftp):\\/\\/")
-## gregexpr("(http|ftp):\\/\\/", text)
+str_locate(text, "http|ftp:\\/\\/")
+## gregexpr("http|ftp:\\/\\/", text)
 
 ## @knitr references
 
@@ -98,10 +99,32 @@ str_replace_all(text, "<.*>", "")
 str_replace_all(text, "<.*?>", "")
 ## gsub("<.*?>", "", text)
 
+## @knitr newlines
+myex <- regex("<p>.*</p>", dotall = TRUE)
+html_string <- "And <p>here is some\ninformation</p> for you."
+str_extract(html_string, myex)
+str_extract(html_string, "<p>.*</p>")
+
+
 ## @knitr split
 line <- "a dog\tjumped\nover \tthe moon."
 cat(line)
 str_split(line, "[[:space:]]+")
 str_split(line, "[[:blank:]]+")
+
+## @knitr escaping
+
+## last case here is literally a backslash and then 'n'
+strings <- c("Hello", "Hello.", "Hello\nthere", "Hello\\nthere")
+cat(strings, sep = "\n")
+str_detect(strings, ".")     ## . means any character
+str_detect(strings, "\.")    ## \. looks for the special symbol \.
+str_detect(strings, "\\.")   ## \\ says treat \ literally, which then escapes the .
+str_detect(strings, "\n")    ## \n looks for the special symbol \n
+str_detect(strings, "\\")    ## \\ says treat \ literally, but \ is not meaningful regex
+str_detect(strings, "\\\\")  ## R parser removes two \ to give \\;
+                             ## then in regex \\ treats second \ literally
+                             
+
 
 

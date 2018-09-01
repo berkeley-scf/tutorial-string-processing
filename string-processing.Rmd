@@ -16,7 +16,9 @@ read_chunk('string-processing.py')
 
 This tutorial covers tools for manipulating text data in R and Python, including the use of regular expressions. We also briefly discuss tools for reading and manipulating formatted text files such as HTML, XML, and JSON. At the moment, this tutorial is somewhat more focused on R than Python, but we hope to flesh out the Python sections more fully in the future.
 
-This tutorial was developed using a virtual machine developed here at Berkeley, the [Berkeley Common Environment (BCE)](http://bce.berkeley.edu). BCE is a virtual Linux machine - basically it is a Linux computer that you can run within your own computer, regardless of whether you are using Windows, Mac, or Linux. This provides a common environment so that things behave the same for all of us. However, BCE has not been updated in a while, and if you have a standard R or Python installation and can install the *stringr* package for R and the *re* package for Python, that should work too.
+This tutorial was originally developed using a virtual machine developed here at Berkeley, the [Berkeley Common Environment (BCE)](http://bce.berkeley.edu). BCE is a virtual Linux machine - basically it is a Linux computer that you can run within your own computer, regardless of whether you are using Windows, Mac, or Linux. This provides a common environment so that things behave the same for all of us.
+
+However, BCE has not been updated in a while, and if you have a standard R or Python installation and can install the *stringr* package for R and the *re* package for Python, that should work too.
 
 This tutorial assumes you have a working knowledge of R or Python. 
 
@@ -40,7 +42,6 @@ term *string* here, I'll be referring to any sequence of characters
 that may include numbers, white space, and special characters. Note that in R
 a character vector is a vector of one or more such strings.  
 
-
 # 2) Basic text manipulation 
 
 Some of the basic things we need to do are paste/concatenate strings together,
@@ -51,6 +52,8 @@ sequence. This involves the use of regular expressions, covered in Section 3.
 ## 2.1) R
 
 In general, strings in R are stored in character vectors. R's functions for string manipulation are fully vectorized and will work on all of the strings in a vector at once.
+
+Here's a [cheatsheet from RStudio](https://github.com/rstudio/cheatsheets/raw/master/strings.pdf) on manipulating strings in R.
 
 ### 2.1.1) String manipulation in base R
 
@@ -72,8 +75,6 @@ on a character vector (i.e., on multiple strings).
 
 ```{r, r-basics2}
 ```
-
-
 
 
 To identify particular subsequences in strings, there are several
@@ -98,6 +99,8 @@ clunkiness involved in some of the string operations with the base
 string functions, such as having to to call *gregexpr* and
 then *regmatches* to pull out the matched strings. In general, I'd suggest using *stringr* functions
 in place of R's base string functions.
+
+Here's 
 
 First let's see *stringr*'s versions of some of the base string functions mentioned in the previous sections.
 
@@ -184,6 +187,8 @@ Please look at Section 3 of [our tutorial on using the bash shell](https://githu
 has written a nice tutorial that is part of the repository for this tutorial 
 or check out Sections 9.9 and 11 of [Paul Murrell's book](http://www.stat.auckland.ac.nz/~paul/ItDT)
 
+Also, here's a [cheatsheet on regular expressions](https://www.rstudio.com/wp-content/uploads/2016/09/RegExCheatsheet.pdf) and here is a [website where you can interactively test regular expressions on example strings](https://regex101.com).
+
 ## 3.1) Versions of regular expressions
 
 One thing that can cause headaches is differences in version of regular expression syntax used. As discussed in `man grep`, *extended regular expressions* are standard, with *basic regular expressions* providing somewhat less functionality and *Perl regular expressions* additional functionality. 
@@ -203,12 +208,15 @@ and learning regular expression syntax and debugging your regex. As with
 many kinds of coding, I find that debugging my regex is usually what takes
 most of my time.
 
-## 3.1) Using regex in R
+## 3.3) Using regex in R
+
 
 The *grep*, *gregexpr* and *gsub* functions and
 their *stringr* analogs are more powerful when used with regular
 expressions. In the following examples, we'll illustrate usage of *stringr* functions, but 
 with their base R analogs as comments.
+
+### 3.3.1) Working with patterns
 
 First let's see the use of character sets and character classes.
 
@@ -277,15 +285,27 @@ However, one can often avoid greedy matching by being more clever.
 
 Challenge: How could we change our regexp to avoid the greedy matching without using the “?”?
 
+### 3.3.2 Other comments
+
+If we are working with newlines embedded in a string, we can include the newline character as a regular character that is matched by a “.” by first creating the regular expression with *stringr::regex* with the *dotall* argument set to `TRUE`:
+
+```{r, newlines}
+```
+
 Regular expression can be used in a variety of places. E.g., to split by any number of white space characters
 
 ```{r, split}
 ```
 
+Using backslashes to 'escape' particular characters can be tricky. One rule of thumb is to just keep adding backslashes until you get what you want!
 
-## 3.2) Using regex in Python
+```{r, escaping}
+```
 
-### 3.2.1) Working with patterns
+
+## 3.4) Using regex in Python
+
+### 3.4.1) Working with patterns
 
 For working with regex in Python, we'll need the *re* package. It provides Perl-style regular expressions, but it doesn't seem to support named character classes such as `[:digit:]`. Instead use classes such as `\d` and `[0-9]`.
 
@@ -321,7 +341,7 @@ Finally, let's see the consequences of greedy matching and use of `?` to avoid g
 ```{r, py-greedy, engine='python'}
 ```
 
-### 3.2.2) Other comments
+### 3.4.2) Other comments
 
 You can also compile regex patterns for faster processing when working with a pattern multiple times.
 
@@ -330,10 +350,16 @@ You can also compile regex patterns for faster processing when working with a pa
 
 For reasons explained in the [re documentation](https://docs.python.org/2/howto/regex.html), to match an actual backslash, such as `"\section"`, you'd need `"\\\\section"`. This can be avoided by using raw strings: `r"\\section"`.
 
+Here are some more examples of escaping characters.
+
+```{r, py-escape, engine='python'}
+```
+
+
 # 4) Webscraping and formatted text files
 
 There are lots of packages in both R and Python for downloading, reading in, and parsing formatted text files, such as HTML, XML, and JSON, as well as for submitting HTTP requests. So make sure you don't reinvent the wheel of what is already out there. 
 
-For R, *httr* and *RCurl* are good for interacting with webpages and *XML* for reading/parsing HTML and XML files. *jsonlite* is good for reading/parsing JSON. See the [WebTechnologies CRAN task view](https://cran.r-project.org/web/views/WebTechnologies.html) for a summary.
+For R, *httr* and *RCurl* are good for interacting with webpages and *rvest* and *XML2* for reading/parsing HTML and XML files. *jsonlite* is good for reading/parsing JSON. See the [WebTechnologies CRAN task view](https://cran.r-project.org/web/views/WebTechnologies.html) for a summary.
 
 For Python, the *requests* module is good for interacting with webpages. For XML and HTML, *lxml* is good, in particular *lxml.etree* and *lxml.html*.  For HTML, one might also use *HTMLParser* in Python 2.7 and *html.parser* in Python 3, and for XML there is also the *xml* module. *json* is good for reading/parsing JSON files.
