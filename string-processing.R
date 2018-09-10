@@ -77,8 +77,8 @@ str_extract_all(text, "(1[-\\.])?([[:digit:]]{3}[-\\.]){1,2}[[:digit:]]{4}")
 
 ## @knitr grouping2
 text <- c("at the site http://www.ibm.com", "other text", "ftp://ibm.com")
-str_locate(text, "http|ftp:\\/\\/")
-## gregexpr("http|ftp:\\/\\/", text)
+str_locate(text, "(http|ftp):\\/\\/")
+## gregexpr("(http|ftp):\\/\\/", text)
 
 ## @knitr references
 

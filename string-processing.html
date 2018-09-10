@@ -732,16 +732,16 @@ str_extract_all(text, pattern)
 <p>Here&#39;s a basic example of using grouping with the OR operator.</p>
 
 <pre><code class="r">text &lt;- c(&quot;at the site http://www.ibm.com&quot;, &quot;other text&quot;, &quot;ftp://ibm.com&quot;)
-str_locate(text, &quot;http|ftp:\\/\\/&quot;)
+str_locate(text, &quot;(http|ftp):\\/\\/&quot;)
 </code></pre>
 
 <pre><code>##      start end
-## [1,]    13  16
+## [1,]    13  19
 ## [2,]    NA  NA
 ## [3,]     1   6
 </code></pre>
 
-<pre><code class="r">## gregexpr(&quot;http|ftp:\\/\\/&quot;, text)
+<pre><code class="r">## gregexpr(&quot;(http|ftp):\\/\\/&quot;, text)
 </code></pre>
 
 <p>And reference back to a detected pattern when doing a replacement. Here we&#39;ll remove commas not used as field separators.</p>
