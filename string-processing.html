@@ -593,15 +593,15 @@ str_detect(text, &quot;[[:digit:]]&quot;)
 <pre><code class="r">## grep(&quot;[[:digit:]]&quot;, text, perl = TRUE)
 </code></pre>
 
-<pre><code class="r">str_detect(text, &quot;[:,\t\\.]&quot;)
+<pre><code class="r">str_detect(text, &quot;[:,\t.]&quot;)
 </code></pre>
 
 <pre><code>## [1]  TRUE  TRUE FALSE  TRUE
 </code></pre>
 
-<pre><code class="r">## grep(&quot;[:,\t]&quot;, text)
+<pre><code class="r">## grep(&quot;[:,\t.]&quot;, text)
 
-str_locate_all(text, &quot;[:,\t\\.]&quot;)
+str_locate_all(text, &quot;[:,\t.]&quot;)
 </code></pre>
 
 <pre><code>## [[1]]
@@ -622,7 +622,7 @@ str_locate_all(text, &quot;[:,\t\\.]&quot;)
 ## [2,]    20  20
 </code></pre>
 
-<pre><code class="r">## gregexpr(&quot;[:,\t\\.]&quot;, text)
+<pre><code class="r">## gregexpr(&quot;[:,\t.]&quot;, text)
 
 str_extract_all(text, &quot;[[:digit:]]+&quot;)
 </code></pre>
@@ -680,7 +680,7 @@ str_detect(text, &quot;[[:digit:]]$&quot;) # text with a digit
 
 <pre><code class="r">text &lt;- c(&quot;Here&#39;s my number: 919-543-3300.&quot;, &quot;hi John, good to meet you&quot;,
           &quot;They bought 731 bananas&quot;, &quot;Please call 919.554.3800&quot;)
-pattern &lt;- &quot;[[:digit:]]{3}[-\\.][[:digit:]]{3}[-\\.][[:digit:]]{4}&quot;
+pattern &lt;- &quot;[[:digit:]]{3}[-.][[:digit:]]{3}[-.][[:digit:]]{4}&quot;
 str_extract_all(text, pattern)
 </code></pre>
 
@@ -707,7 +707,7 @@ str_extract_all(text, pattern)
 
 <p>For example, the phone number detection problem could have been done a bit more compactly (and more generally, in case the area code is omitted or a 1 is included) as:</p>
 
-<pre><code class="r">str_extract_all(text, &quot;(1[-\\.])?([[:digit:]]{3}[-\\.]){1,2}[[:digit:]]{4}&quot;)
+<pre><code class="r">str_extract_all(text, &quot;(1[-.])?([[:digit:]]{3}[-.]){1,2}[[:digit:]]{4}&quot;)
 </code></pre>
 
 <pre><code>## [[1]]
@@ -723,7 +723,7 @@ str_extract_all(text, pattern)
 ## [1] &quot;919.554.3800&quot;
 </code></pre>
 
-<pre><code class="r">## matches &lt;- gregexpr(&quot;(1[-\\.])?([[:digit:]]{3}[-\\.]){1,2}[[:digit:]]{4}&quot;, text)
+<pre><code class="r">## matches &lt;- gregexpr(&quot;(1[-.])?([[:digit:]]{3}[-.]){1,2}[[:digit:]]{4}&quot;, text)
 ## regmatches(text, matches)
 </code></pre>
 

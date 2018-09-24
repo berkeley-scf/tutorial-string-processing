@@ -39,11 +39,11 @@ str_detect(text, "[[:digit:]]")
 
 ## @knitr detect2
 
-str_detect(text, "[:,\t\\.]")
-## grep("[:,\t]", text)
+str_detect(text, "[:,\t.]")
+## grep("[:,\t.]", text)
 
-str_locate_all(text, "[:,\t\\.]")
-## gregexpr("[:,\t\\.]", text)
+str_locate_all(text, "[:,\t.]")
+## gregexpr("[:,\t.]", text)
 
 str_extract_all(text, "[[:digit:]]+")
 ## matches <- gregexpr("[[:digit]]+", text)
@@ -64,15 +64,15 @@ str_detect(text, "[[:digit:]]$") # text with a digit
 
 text <- c("Here's my number: 919-543-3300.", "hi John, good to meet you",
           "They bought 731 bananas", "Please call 919.554.3800")
-pattern <- "[[:digit:]]{3}[-\\.][[:digit:]]{3}[-\\.][[:digit:]]{4}"
+pattern <- "[[:digit:]]{3}[-.][[:digit:]]{3}[-.][[:digit:]]{4}"
 str_extract_all(text, pattern)
 ## matches <- gregexpr(pattern, text)
 ## regmatches(text, matches)
 
 
 ## @knitr grouping
-str_extract_all(text, "(1[-\\.])?([[:digit:]]{3}[-\\.]){1,2}[[:digit:]]{4}")
-## matches <- gregexpr("(1[-\\.])?([[:digit:]]{3}[-\\.]){1,2}[[:digit:]]{4}", text)
+str_extract_all(text, "(1[-.])?([[:digit:]]{3}[-.]){1,2}[[:digit:]]{4}")
+## matches <- gregexpr("(1[-.])?([[:digit:]]{3}[-.]){1,2}[[:digit:]]{4}", text)
 ## regmatches(text, matches)
 
 ## @knitr grouping2
