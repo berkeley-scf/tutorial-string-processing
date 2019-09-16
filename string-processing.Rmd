@@ -253,14 +253,17 @@ For example, the phone number detection problem could have been done a bit more 
 
 Challenge: the above pattern would actually match something that is not a valid phone number. What can go wrong?
 
-Here's a basic example of using grouping with the OR operator.
+Here's a basic example of using grouping via parentheses with the OR operator.
 
 ```{r, grouping2}
 ```
 
+Parentheses are also used for referencing back to a detected pattern when doing a replacement. For example, here we'll find any numbers and add underscores before and after them:
 
+```{r, references-basic}
+```
 
-And reference back to a detected pattern when doing a replacement. Here we'll remove commas not used as field separators.
+Here we'll remove commas not used as field separators.
 
 ```{r, references}
 ```

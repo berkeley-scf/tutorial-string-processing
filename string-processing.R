@@ -80,6 +80,11 @@ text <- c("at the site http://www.ibm.com", "other text", "ftp://ibm.com")
 str_locate(text, "(http|ftp):\\/\\/")
 ## gregexpr("(http|ftp):\\/\\/", text)
 
+## @knitr references-basic
+text <- c("Here's my number: 919-543-3300.", "hi John, good to meet you",
+          "They bought 731 bananas", "Please call 919.554.3800")
+str_replace_all(text, "([0-9]+)", "_\\1_")
+
 ## @knitr references
 
 text <- ('"H4NY07011","ACKERMAN, GARY L.","H","$13,242",,,')

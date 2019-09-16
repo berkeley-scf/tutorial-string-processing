@@ -324,6 +324,8 @@ grep(&quot;2016&quot;, dates)
 ## [1] 1
 ## attr(,&quot;match.length&quot;)
 ## [1] 4
+## attr(,&quot;index.type&quot;)
+## [1] &quot;chars&quot;
 ## attr(,&quot;useBytes&quot;)
 ## [1] TRUE
 ## 
@@ -331,6 +333,8 @@ grep(&quot;2016&quot;, dates)
 ## [1] -1
 ## attr(,&quot;match.length&quot;)
 ## [1] -1
+## attr(,&quot;index.type&quot;)
+## [1] &quot;chars&quot;
 ## attr(,&quot;useBytes&quot;)
 ## [1] TRUE
 ## 
@@ -338,6 +342,8 @@ grep(&quot;2016&quot;, dates)
 ## [1] 1
 ## attr(,&quot;match.length&quot;)
 ## [1] 4
+## attr(,&quot;index.type&quot;)
+## [1] &quot;chars&quot;
 ## attr(,&quot;useBytes&quot;)
 ## [1] TRUE
 </code></pre>
@@ -729,7 +735,7 @@ str_extract_all(text, pattern)
 
 <p>Challenge: the above pattern would actually match something that is not a valid phone number. What can go wrong?</p>
 
-<p>Here&#39;s a basic example of using grouping with the OR operator.</p>
+<p>Here&#39;s a basic example of using grouping via parentheses with the OR operator.</p>
 
 <pre><code class="r">text &lt;- c(&quot;at the site http://www.ibm.com&quot;, &quot;other text&quot;, &quot;ftp://ibm.com&quot;)
 str_locate(text, &quot;(http|ftp):\\/\\/&quot;)
@@ -744,7 +750,20 @@ str_locate(text, &quot;(http|ftp):\\/\\/&quot;)
 <pre><code class="r">## gregexpr(&quot;(http|ftp):\\/\\/&quot;, text)
 </code></pre>
 
-<p>And reference back to a detected pattern when doing a replacement. Here we&#39;ll remove commas not used as field separators.</p>
+<p>Parentheses are also used for referencing back to a detected pattern when doing a replacement. For example, here we&#39;ll find any numbers and add underscores before and after them:</p>
+
+<pre><code class="r">text &lt;- c(&quot;Here&#39;s my number: 919-543-3300.&quot;, &quot;hi John, good to meet you&quot;,
+          &quot;They bought 731 bananas&quot;, &quot;Please call 919.554.3800&quot;)
+str_replace_all(text, &quot;([0-9]+)&quot;, &quot;_\\1_&quot;)
+</code></pre>
+
+<pre><code>## [1] &quot;Here&#39;s my number: _919_-_543_-_3300_.&quot;
+## [2] &quot;hi John, good to meet you&quot;            
+## [3] &quot;They bought _731_ bananas&quot;            
+## [4] &quot;Please call _919_._554_._3800_&quot;
+</code></pre>
+
+<p>Here we&#39;ll remove commas not used as field separators.</p>
 
 <pre><code class="r">text &lt;- (&#39;&quot;H4NY07011&quot;,&quot;ACKERMAN, GARY L.&quot;,&quot;H&quot;,&quot;$13,242&quot;,,,&#39;)
 clean_text &lt;- str_replace_all(text, &quot;([^\&quot;,]),&quot;, &quot;\\1&quot;)
@@ -939,12 +958,14 @@ print( re.findall(&quot;hat&quot;, str, re.IGNORECASE) )
 <pre><code class="python">import re
 text = [&quot;Here&#39;s my number: 919-543-3300.&quot;, &quot;hi John, good to meet you&quot;,
           &quot;They bought 731 bananas&quot;, &quot;Please call 919.554.3800&quot;]
+
 def return_group(pattern, txt):
     m = re.search(pattern, txt)
     if m:
        return(m.group())
     else:
        return(None)
+
 print( [return_group(&quot;\d+&quot;, str) for str in text] )
 </code></pre>
 
@@ -1022,7 +1043,7 @@ print(strings[2])
 <pre><code class="python">print(re.search(&quot;.&quot;, strings[0]))    ## . means any character
 </code></pre>
 
-<pre><code>## &lt;_sre.SRE_Match object; span=(0, 1), match=&#39;H&#39;&gt;
+<pre><code>## &lt;re.Match object; span=(0, 1), match=&#39;H&#39;&gt;
 </code></pre>
 
 <pre><code class="python">print(re.search(&quot;\.&quot;, strings[0]))   ## \. escapes the period and treats it literally
@@ -1034,13 +1055,13 @@ print(strings[2])
 <pre><code class="python">print(re.search(&quot;\.&quot;, strings[1]))   ## \. escapes the period and treats it literally
 </code></pre>
 
-<pre><code>## &lt;_sre.SRE_Match object; span=(5, 6), match=&#39;.&#39;&gt;
+<pre><code>## &lt;re.Match object; span=(5, 6), match=&#39;.&#39;&gt;
 </code></pre>
 
 <pre><code class="python">print(re.search(&quot;\n&quot;, strings[2]))   ## \n looks for the special symbol \n
 </code></pre>
 
-<pre><code>## &lt;_sre.SRE_Match object; span=(5, 6), match=&#39;\n&#39;&gt;
+<pre><code>## &lt;re.Match object; span=(5, 6), match=&#39;\n&#39;&gt;
 </code></pre>
 
 <pre><code class="python">print(re.search(&quot;\n&quot;, strings[3]))   ## \n looks for the special symbol \n
@@ -1053,7 +1074,7 @@ print(strings[2])
                                      ## then in regex \\ treats second \ literally
 </code></pre>
 
-<pre><code>## &lt;_sre.SRE_Match object; span=(5, 6), match=&#39;\\&#39;&gt;
+<pre><code>## &lt;re.Match object; span=(5, 6), match=&#39;\\&#39;&gt;
 </code></pre>
 
 <h1>4) Webscraping and formatted text files</h1>
