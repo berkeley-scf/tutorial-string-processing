@@ -350,51 +350,7 @@ However, one can often avoid greedy matching by being more clever.
 Challenge: How could we change our regexp to avoid the greedy matching
 without using the “?”?
 
-### 5.2 Other comments
-
-If we are working with newlines embedded in a string, we can include the
-newline character as a regular character that is matched by a “.” by
-first creating the regular expression with *stringr::regex* with the
-*dotall* argument set to `TRUE`:
-
-``` r
-myex <- regex("<p>.*</p>", dotall = TRUE)
-html_string <- "And <p>here is some\ninformation</p> for you."
-str_extract(html_string, myex)
-```
-
-    ## [1] "<p>here is some\ninformation</p>"
-
-``` r
-str_extract(html_string, "<p>.*</p>")   # doesn't work because \n is not matched
-```
-
-    ## [1] NA
-
-Regular expression can be used in a variety of places. E.g., to split by
-any number of white space characters
-
-``` r
-line <- "a dog\tjumped\nover \tthe moon."
-cat(line)
-```
-
-    ## a dog    jumped
-    ## over     the moon.
-
-``` r
-str_split(line, "[[:space:]]+")
-```
-
-    ## [[1]]
-    ## [1] "a"      "dog"    "jumped" "over"   "the"    "moon."
-
-``` r
-str_split(line, "[[:blank:]]+")
-```
-
-    ## [[1]]
-    ## [1] "a"            "dog"          "jumped\nover" "the"          "moon."
+### 5.2 ‘Escaping’ special characters
 
 Using backslashes to ‘escape’ particular characters can be tricky. One
 rule of thumb is to just keep adding backslashes until you get what you
@@ -448,6 +404,52 @@ str_detect(strings, "\\\\")
 ```
 
     ## [1] FALSE FALSE FALSE  TRUE
+
+### 5.3 Other comments
+
+If we are working with newlines embedded in a string, we can include the
+newline character as a regular character that is matched by a “.” by
+first creating the regular expression with *stringr::regex* with the
+*dotall* argument set to `TRUE`:
+
+``` r
+myex <- regex("<p>.*</p>", dotall = TRUE)
+html_string <- "And <p>here is some\ninformation</p> for you."
+str_extract(html_string, myex)
+```
+
+    ## [1] "<p>here is some\ninformation</p>"
+
+``` r
+str_extract(html_string, "<p>.*</p>")   # doesn't work because \n is not matched
+```
+
+    ## [1] NA
+
+Regular expression can be used in a variety of places. E.g., to split by
+any number of white space characters
+
+``` r
+line <- "a dog\tjumped\nover \tthe moon."
+cat(line)
+```
+
+    ## a dog    jumped
+    ## over     the moon.
+
+``` r
+str_split(line, "[[:space:]]+")
+```
+
+    ## [[1]]
+    ## [1] "a"      "dog"    "jumped" "over"   "the"    "moon."
+
+``` r
+str_split(line, "[[:blank:]]+")
+```
+
+    ## [[1]]
+    ## [1] "a"            "dog"          "jumped\nover" "the"          "moon."
 
 ## 6 Using regex in Python
 
@@ -573,21 +575,7 @@ re.sub("<.*?>", "", text)
 
     ## 'Do an internship  in place  of  one  course.'
 
-### 6.2 Other comments
-
-You can also compile regex patterns for faster processing when working
-with a pattern multiple times.
-
-``` python
-import re
-text = ["Here's my number: 919-543-3300.", "hi John, good to meet you",
-          "They bought 731 bananas", "Please call 919.554.3800"]
-p = re.compile('\d+')
-m = p.search(text[0])
-m.group()
-```
-
-    ## '919'
+### 6.2 ‘Escaping’ special characters
 
 For reasons explained in the [re
 documentation](https://docs.python.org/3/howto/regex.html), to match an
@@ -648,3 +636,19 @@ re.search("\\\\", strings[3])  ## string parser removes two \ to give \\;
 ```
 
     ## <re.Match object; span=(5, 6), match='\\'>
+
+### 6.3 Other comments
+
+You can also compile regex patterns for faster processing when working
+with a pattern multiple times.
+
+``` python
+import re
+text = ["Here's my number: 919-543-3300.", "hi John, good to meet you",
+          "They bought 731 bananas", "Please call 919.554.3800"]
+p = re.compile('\d+')
+m = p.search(text[0])
+m.group()
+```
+
+    ## '919'

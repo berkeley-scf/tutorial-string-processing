@@ -216,41 +216,7 @@ However, one can often avoid greedy matching by being more clever.
 
 Challenge: How could we change our regexp to avoid the greedy matching without using the “?”?
 
-### 5.2 Other comments
-
-If we are working with newlines embedded in a string, we can include the newline character as a regular character that is matched by a “.” by first creating the regular expression with *stringr::regex* with the *dotall* argument set to `TRUE`:
-
-
-```{r}
-myex <- regex("<p>.*</p>", dotall = TRUE)
-html_string <- "And <p>here is some\ninformation</p> for you."
-str_extract(html_string, myex)
-```
-
-```{r}
-str_extract(html_string, "<p>.*</p>")   # doesn't work because \n is not matched
-```
-
-
-Regular expression can be used in a variety of places. E.g., to split by any number of white space characters
-
-
-```{r}
-line <- "a dog\tjumped\nover \tthe moon."
-cat(line)
-```
-
-
-```{r}
-str_split(line, "[[:space:]]+")
-```
-
-
-
-```{r}
-str_split(line, "[[:blank:]]+")
-```
-
+### 5.2 'Escaping' special characters
 
 Using backslashes to 'escape' particular characters can be tricky. One rule of thumb is to just keep adding backslashes until you get what you want!
 
@@ -278,6 +244,36 @@ try(str_detect(strings, "\\"))
 ## R parser removes two \ to give \\; then in regex \\ treats second \ literally
 str_detect(strings, "\\\\")        
 ```
+
+
+### 5.3 Other comments
+
+If we are working with newlines embedded in a string, we can include the newline character as a regular character that is matched by a “.” by first creating the regular expression with *stringr::regex* with the *dotall* argument set to `TRUE`:
+
+
+```{r}
+myex <- regex("<p>.*</p>", dotall = TRUE)
+html_string <- "And <p>here is some\ninformation</p> for you."
+str_extract(html_string, myex)
+```
+
+```{r}
+str_extract(html_string, "<p>.*</p>")   # doesn't work because \n is not matched
+```
+
+
+Regular expression can be used in a variety of places. E.g., to split by any number of white space characters
+
+
+```{r}
+line <- "a dog\tjumped\nover \tthe moon."
+cat(line)
+
+str_split(line, "[[:space:]]+")
+
+str_split(line, "[[:blank:]]+")
+```
+
 
 
 ## 6 Using regex in Python
@@ -375,19 +371,7 @@ re.sub("<.*?>", "", text)
 ```
 
 
-### 6.2 Other comments
-
-You can also compile regex patterns for faster processing when working with a pattern multiple times.
-
-
-```{python}
-import re
-text = ["Here's my number: 919-543-3300.", "hi John, good to meet you",
-          "They bought 731 bananas", "Please call 919.554.3800"]
-p = re.compile('\d+')
-m = p.search(text[0])
-m.group()
-```
+### 6.2 'Escaping' special characters
 
 
 For reasons explained in the [re documentation](https://docs.python.org/3/howto/regex.html), to match an actual backslash, such as `"\section"`, you'd need `"\\\\section"`. This can be avoided by using raw strings: `r"\\section"`.
@@ -411,6 +395,22 @@ re.search("\n", strings[3])   ## \n looks for the special symbol \n
 re.search("\\\\", strings[3])  ## string parser removes two \ to give \\;
                                ## then in regex \\ treats second \ literally
 ```
+
+
+### 6.3 Other comments
+
+You can also compile regex patterns for faster processing when working with a pattern multiple times.
+
+
+```{python}
+import re
+text = ["Here's my number: 919-543-3300.", "hi John, good to meet you",
+          "They bought 731 bananas", "Please call 919.554.3800"]
+p = re.compile('\d+')
+m = p.search(text[0])
+m.group()
+```
+
 
 
 
