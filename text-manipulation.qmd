@@ -1,4 +1,7 @@
-# Basic text manipulation  in R and Python
+---
+title: Basic text manipulation in R and Python
+layout: default
+---
 
 Text manipulations in R, Python, Perl, and bash have a number of things 
 in common, as many of these evolved from UNIX. When I use the

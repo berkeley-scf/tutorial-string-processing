@@ -1,4 +1,8 @@
-# Using regular expression in R and Python
+---
+title: Using regular expression in R and Python 
+layout: default
+---
+
 
 ## 1 Overview
 
