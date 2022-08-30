@@ -1,0 +1,650 @@
+---
+title: Using regular expression in R and Python 
+layout: default
+---
+
+## 1 Overview
+
+Regular expressions are a domain-specific language for finding patterns
+and are one of the key functionalities in scripting languages such as
+Perl and Python, as well as the UNIX utilities *grep*, *sed*, and *awk*.
+
+The basic idea of regular expressions is that they allow us to find
+matches of strings or patterns in strings, as well as do substitution.
+Regular expressions are good for tasks such as:
+
+-   extracting pieces of text;
+-   creating variables from information found in text;
+-   cleaning and transforming text into a uniform format; and
+-   mining text by treating documents as data.
+
+## 2 Regular expression syntax
+
+Please use one or more of the following resources to learn regular
+expression syntax.
+
+-   [Our tutorial on using the bash
+    shell](https://berkeley-scf.github.io/tutorial-using-bash/regex)
+-   Duncan Temple Lang (UC Davis Statistics) has written a [nice
+    tutorial](regexpr-Lang.pdf) that is part of the repository for this
+    tutorial
+-   Check out Sections 9.9 and 11 of [Paul Murrell’s
+    book](http://www.stat.auckland.ac.nz/~paul/ItDT)
+
+Also, see the back/second page of RStudio’s stringr cheatsheet for a
+[cheatsheet on regular
+expressions](https://raw.githubusercontent.com/rstudio/cheatsheets/main/strings.pdf)
+for a regular expression cheatsheet. And here is a [website where you
+can interactively test regular expressions on example
+strings](https://regex101.com).
+
+## 3 Versions of regular expressions
+
+One thing that can cause headaches is differences in version of regular
+expression syntax used. As discussed in `man grep`, *extended regular
+expressions* are standard, with *basic regular expressions* providing
+somewhat less functionality and *Perl regular expressions* additional
+functionality. In R, *stringr* provides *ICU regular expressions* (see
+`help(regex)`), which are based on Perl regular expressions. More
+details can be found in the [regex Wikipedia
+page](https://en.wikipedia.org/wiki/Regular_expression).
+
+The [bash shell
+tutorial](https://berkeley-scf.github.io/tutorial-using-bash/regex)
+provides a full documentation of the various *extended regular
+expressions* syntax, which we’ll focus on here. This should be
+sufficient for most usage and should be usable in R and Python, but if
+you notice something funny going on, it might be due to differences
+between the regular expressions versions.
+
+## 4 General principles for working with regex
+
+The syntax is very concise, so it’s helpful to break down individual
+regular expressions into the component parts to understand them. As
+Murrell notes, since regex are their own language, it’s a good idea to
+build up a regex in pieces as a way of avoiding errors just as we would
+with any computer code. *str_detect* in R’s *stringr* and *re.findall*
+in Python are particularly useful in seeing *what* was matched to help
+in understanding and learning regular expression syntax and debugging
+your regex. As with many kinds of coding, I find that debugging my regex
+is usually what takes most of my time.
+
+## 5 Using regex in R
+
+The *grep*, *gregexpr* and *gsub* functions and their *stringr* analogs
+are more powerful when used with regular expressions. In the following
+examples, we’ll illustrate usage of *stringr* functions, but with their
+base R analogs as comments.
+
+### 5.1 Working with patterns
+
+First let’s see the use of character sets and character classes.
+
+``` r
+library(stringr)
+text <- c("Here's my number: 919-543-3300.", "hi John, good to meet you",
+          "They bought 731 bananas", "Please call 919.554.3800")
+str_detect(text, "[[:digit:]]")   ## search for a digit
+```
+
+    ## [1]  TRUE FALSE  TRUE  TRUE
+
+``` r
+## Base R equivalent:
+## grep("[[:digit:]]", text, perl = TRUE)
+```
+
+``` r
+str_detect(text, "[:,\t.]")   # search for various punctuation symbols
+```
+
+    ## [1]  TRUE  TRUE FALSE  TRUE
+
+``` r
+## Base R equivalent:
+## grep("[:,\t.]", text)
+```
+
+``` r
+str_locate_all(text, "[:,\t.]")
+```
+
+    ## [[1]]
+    ##      start end
+    ## [1,]    17  17
+    ## [2,]    31  31
+    ## 
+    ## [[2]]
+    ##      start end
+    ## [1,]     8   8
+    ## 
+    ## [[3]]
+    ##      start end
+    ## 
+    ## [[4]]
+    ##      start end
+    ## [1,]    16  16
+    ## [2,]    20  20
+
+``` r
+## Base R equivalent:
+## gregexpr("[:,\t.]", text)
+```
+
+``` r
+str_extract_all(text, "[[:digit:]]+")  # extract one or more digits
+```
+
+    ## [[1]]
+    ## [1] "919"  "543"  "3300"
+    ## 
+    ## [[2]]
+    ## character(0)
+    ## 
+    ## [[3]]
+    ## [1] "731"
+    ## 
+    ## [[4]]
+    ## [1] "919"  "554"  "3800"
+
+``` r
+## Base R equivalent:
+## matches <- gregexpr("[[:digit]]+", text)
+## regmatches(text, matches)
+```
+
+``` r
+str_replace_all(text, "[[:digit:]]", "X") 
+```
+
+    ## [1] "Here's my number: XXX-XXX-XXXX." "hi John, good to meet you"      
+    ## [3] "They bought XXX bananas"         "Please call XXX.XXX.XXXX"
+
+``` r
+## Base R equivalent:
+## gsub("[[:digit:]]", "X", text)
+```
+
+Challenge: how would we find a spam-like pattern with digits or
+non-letters inside a word? E.g., I want to find “V1agra” or “Fancy
+<repl!c@ted> watches”.
+
+Next let’s consider location-specific matches.
+
+``` r
+str_detect(text, "^[[:upper:]]")   # text starting with upper case letter
+```
+
+    ## [1]  TRUE FALSE  TRUE  TRUE
+
+``` r
+## Base R equivalent:
+## grep("^[[:upper:]]", text) 
+```
+
+``` r
+str_detect(text, "[[:digit:]]$")   # text ending with a digit
+```
+
+    ## [1] FALSE FALSE FALSE  TRUE
+
+``` r
+## Base R equivalent:
+## grep("[[:digit:]]$", text) 
+```
+
+Now let’s make use of repetitions.
+
+Let’s search for US/Canadian/Caribbean phone numbers in the example text
+we’ve been using:
+
+``` r
+text <- c("Here's my number: 919-543-3300.", "hi John, good to meet you",
+          "They bought 731 bananas", "Please call 919.554.3800")
+pattern <- "[[:digit:]]{3}[-.][[:digit:]]{3}[-.][[:digit:]]{4}"
+str_extract_all(text, pattern)
+```
+
+    ## [[1]]
+    ## [1] "919-543-3300"
+    ## 
+    ## [[2]]
+    ## character(0)
+    ## 
+    ## [[3]]
+    ## character(0)
+    ## 
+    ## [[4]]
+    ## [1] "919.554.3800"
+
+``` r
+## Base R equivalent:
+## matches <- gregexpr(pattern, text)
+## regmatches(text, matches)
+```
+
+Challenge: How would I extract an email address from an arbitrary text
+string?
+
+Next consider grouping.
+
+For example, the phone number detection problem could have been done a
+bit more compactly (and more generally, in case the area code is omitted
+or a 1 is included) as:
+
+``` r
+str_extract_all(text, "(1[-.])?([[:digit:]]{3}[-.]){1,2}[[:digit:]]{4}")
+```
+
+    ## [[1]]
+    ## [1] "919-543-3300"
+    ## 
+    ## [[2]]
+    ## character(0)
+    ## 
+    ## [[3]]
+    ## character(0)
+    ## 
+    ## [[4]]
+    ## [1] "919.554.3800"
+
+``` r
+## Base R equivalent:
+## matches <- gregexpr("(1[-.])?([[:digit:]]{3}[-.]){1,2}[[:digit:]]{4}", text)
+## regmatches(text, matches)
+```
+
+Challenge: the above pattern would actually match something that is not
+a valid phone number. What can go wrong?
+
+Here’s a basic example of using grouping via parentheses with the OR
+operator.
+
+``` r
+text <- c("at the site http://www.ibm.com", "other text", "ftp://ibm.com")
+str_locate(text, "(http|ftp):\\/\\/")    # http or ftp followed by ://
+```
+
+    ##      start end
+    ## [1,]    13  19
+    ## [2,]    NA  NA
+    ## [3,]     1   6
+
+``` r
+## Base R equivalent:
+## gregexpr("(http|ftp):\\/\\/", text)
+```
+
+Parentheses are also used for referencing back to a detected pattern
+when doing a replacement. For example, here we’ll find any numbers and
+add underscores before and after them:
+
+``` r
+text <- c("Here's my number: 919-543-3300.", "hi John, good to meet you",
+          "They bought 731 bananas", "Please call 919.554.3800")
+str_replace_all(text, "([0-9]+)", "_\\1_")   # place underscores around all numbers
+```
+
+    ## [1] "Here's my number: _919_-_543_-_3300_."
+    ## [2] "hi John, good to meet you"            
+    ## [3] "They bought _731_ bananas"            
+    ## [4] "Please call _919_._554_._3800_"
+
+Here we’ll remove commas not used as field separators.
+
+``` r
+text <- ('"H4NY07011","ACKERMAN, GARY L.","H","$13,242",,,')
+clean_text <- str_replace_all(text, "([^\",]),", "\\1")
+clean_text
+```
+
+    ## [1] "\"H4NY07011\",\"ACKERMAN GARY L.\",\"H\",\"$13242\",,,"
+
+``` r
+cat(clean_text)
+```
+
+    ## "H4NY07011","ACKERMAN GARY L.","H","$13242",,,
+
+``` r
+## Base R equivalent:
+## gsub("([^\",]),", "\\1", text)
+```
+
+Challenge: Suppose a text string has dates in the form “Aug-3”, “May-9”,
+etc. and I want them in the form “3 Aug”, “9 May”, etc. How would I do
+this search/replace?
+
+Finally let’s consider greedy matching.
+
+``` r
+text <- "Do an internship <b> in place </b> of <b> one </b> course."
+str_replace_all(text, "<.*>", "")
+```
+
+    ## [1] "Do an internship  course."
+
+``` r
+## Base R equivalent:
+## gsub("<.*>", "", text)
+```
+
+What went wrong?
+
+One solution is to append a ? to the repetition syntax to cause the
+matching to be non-greedy. Here’s an example.
+
+``` r
+str_replace_all(text, "<.*?>", "")
+```
+
+    ## [1] "Do an internship  in place  of  one  course."
+
+``` r
+## Base R equivalent:
+## gsub("<.*?>", "", text)
+```
+
+However, one can often avoid greedy matching by being more clever.
+
+Challenge: How could we change our regexp to avoid the greedy matching
+without using the “?”?
+
+### 5.2 Other comments
+
+If we are working with newlines embedded in a string, we can include the
+newline character as a regular character that is matched by a “.” by
+first creating the regular expression with *stringr::regex* with the
+*dotall* argument set to `TRUE`:
+
+``` r
+myex <- regex("<p>.*</p>", dotall = TRUE)
+html_string <- "And <p>here is some\ninformation</p> for you."
+str_extract(html_string, myex)
+```
+
+    ## [1] "<p>here is some\ninformation</p>"
+
+``` r
+str_extract(html_string, "<p>.*</p>")   # doesn't work because \n is not matched
+```
+
+    ## [1] NA
+
+Regular expression can be used in a variety of places. E.g., to split by
+any number of white space characters
+
+``` r
+line <- "a dog\tjumped\nover \tthe moon."
+cat(line)
+```
+
+    ## a dog    jumped
+    ## over     the moon.
+
+``` r
+str_split(line, "[[:space:]]+")
+```
+
+    ## [[1]]
+    ## [1] "a"      "dog"    "jumped" "over"   "the"    "moon."
+
+``` r
+str_split(line, "[[:blank:]]+")
+```
+
+    ## [[1]]
+    ## [1] "a"            "dog"          "jumped\nover" "the"          "moon."
+
+Using backslashes to ‘escape’ particular characters can be tricky. One
+rule of thumb is to just keep adding backslashes until you get what you
+want!
+
+``` r
+## last case here is literally a backslash and then 'n'
+strings <- c("Hello", "Hello.", "Hello\nthere", "Hello\\nthere")
+cat(strings, sep = "\n")
+```
+
+    ## Hello
+    ## Hello.
+    ## Hello
+    ## there
+    ## Hello\nthere
+
+``` r
+str_detect(strings, ".")         ## . means any character
+```
+
+    ## [1] TRUE TRUE TRUE TRUE
+
+``` r
+## This would fail because \. looks for the special symbol \.
+## (which doesn't exist):
+## str_detect(strings, "\."))
+
+str_detect(strings, "\\.")       ## \\ says treat \ literally, which then escapes the .
+```
+
+    ## [1] FALSE  TRUE FALSE FALSE
+
+``` r
+str_detect(strings, "\n")        ## \n looks for the special symbol \n
+```
+
+    ## [1] FALSE FALSE  TRUE FALSE
+
+``` r
+## \\ says treat \ literally, but \ is not meaningful regex
+try(str_detect(strings, "\\"))
+```
+
+    ## Error in stri_detect_regex(string, pattern, negate = negate, opts_regex = opts(pattern)) : 
+    ##   Unrecognized backslash escape sequence in pattern. (U_REGEX_BAD_ESCAPE_SEQUENCE, context=`\`)
+
+``` r
+## R parser removes two \ to give \\; then in regex \\ treats second \ literally
+str_detect(strings, "\\\\")        
+```
+
+    ## [1] FALSE FALSE FALSE  TRUE
+
+## 6 Using regex in Python
+
+### 6.1 Working with patterns
+
+For working with regex in Python, we’ll need the *re* package. It
+provides Perl-style regular expressions, but it doesn’t seem to support
+named character classes such as `[:digit:]`. Instead use classes such as
+`\d` and `[0-9]`.
+
+Again, in the code chunks that follow, all the explicit print statements
+are needed for R Markdown to print out the values.
+
+In Python, you apply a matching function and then query the result to
+get information about what was matched and where in the string.
+
+``` python
+import re
+text = ["Here's my number: 919-543-3300.", "hi John, good to meet you",
+          "They bought 731 bananas", "Please call 919.554.3800"]
+m = re.search("\d+", text[0])
+m
+```
+
+    ## <re.Match object; span=(18, 21), match='919'>
+
+``` python
+m.group()
+```
+
+    ## '919'
+
+``` python
+m.start()
+```
+
+    ## 18
+
+``` python
+m.end()
+```
+
+    ## 21
+
+``` python
+m.span()
+```
+
+    ## (18, 21)
+
+``` python
+import re
+text = ["Here's my number: 919-543-3300.", "hi John, good to meet you",
+          "They bought 731 bananas", "Please call 919.554.3800"]
+re.findall("\d+", text[0])
+```
+
+    ## ['919', '543', '3300']
+
+To ignore case, do the following:
+
+``` python
+import re
+str = "That cat in the Hat"
+re.findall("hat", str, re.IGNORECASE)
+```
+
+    ## ['hat', 'Hat']
+
+We can of course use list comprehension to work with multiple strings.
+But we need to be careful to check whether a match was found.
+
+``` python
+import re
+text = ["Here's my number: 919-543-3300.", "hi John, good to meet you",
+          "They bought 731 bananas", "Please call 919.554.3800"]
+
+def return_group(pattern, txt):
+    m = re.search(pattern, txt)
+    if m:
+       return(m.group())
+    else:
+       return(None)
+
+[return_group("\d+", str) for str in text]
+```
+
+    ## ['919', None, '731', '919']
+
+Next, let’s look at replacing patterns.
+
+``` python
+import re
+text = ["Here's my number: 919-543-3300.", "hi John, good to meet you",
+          "They bought 731 bananas", "Please call 919.554.3800"]
+re.sub("\d", "Z", text[0])
+```
+
+    ## "Here's my number: ZZZ-ZZZ-ZZZZ."
+
+``` python
+import re
+text = '"H4NY07011","ACKERMAN, GARY L.","H","$13,242",,,'
+re.sub("([^\",]),", "\\1", text)
+```
+
+    ## '"H4NY07011","ACKERMAN GARY L.","H","$13242",,,'
+
+Finally, let’s see the consequences of greedy matching and use of `?` to
+avoid greeding matching.
+
+``` python
+import re
+text = "Do an internship <b> in place </b> of <b> one </b> course."
+re.sub("<.*>", "", text)
+```
+
+    ## 'Do an internship  course.'
+
+``` python
+re.sub("<.*?>", "", text)
+```
+
+    ## 'Do an internship  in place  of  one  course.'
+
+### 6.2 Other comments
+
+You can also compile regex patterns for faster processing when working
+with a pattern multiple times.
+
+``` python
+import re
+text = ["Here's my number: 919-543-3300.", "hi John, good to meet you",
+          "They bought 731 bananas", "Please call 919.554.3800"]
+p = re.compile('\d+')
+m = p.search(text[0])
+m.group()
+```
+
+    ## '919'
+
+For reasons explained in the [re
+documentation](https://docs.python.org/3/howto/regex.html), to match an
+actual backslash, such as `"\section"`, you’d need `"\\\\section"`. This
+can be avoided by using raw strings: `r"\\section"`.
+
+Here are some more examples of escaping characters.
+
+``` python
+strings = ["Hello", "Hello.", "Hello\nthere", "Hello\\nthere"]
+strings[2]
+```
+
+    ## 'Hello\nthere'
+
+``` python
+strings[3]
+```
+
+    ## 'Hello\\nthere'
+
+``` python
+print(strings[2])
+```
+
+    ## Hello
+    ## there
+
+``` python
+print(strings[3])
+```
+
+    ## Hello\nthere
+
+``` python
+re.search(".", strings[0])    ## . means any character
+```
+
+    ## <re.Match object; span=(0, 1), match='H'>
+
+``` python
+re.search("\.", strings[0])   ## \. escapes the period and treats it literally
+re.search("\.", strings[1])   ## \. escapes the period and treats it literally
+```
+
+    ## <re.Match object; span=(5, 6), match='.'>
+
+``` python
+re.search("\n", strings[2])   ## \n looks for the special symbol \n
+```
+
+    ## <re.Match object; span=(5, 6), match='\n'>
+
+``` python
+re.search("\n", strings[3])   ## \n looks for the special symbol \n
+re.search("\\\\", strings[3])  ## string parser removes two \ to give \\;
+                               ## then in regex \\ treats second \ literally
+```
+
+    ## <re.Match object; span=(5, 6), match='\\'>
