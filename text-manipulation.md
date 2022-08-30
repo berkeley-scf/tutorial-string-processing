@@ -29,13 +29,17 @@ on manipulating strings using the *stringr* package in R.
 
 A few of the basic R functions for manipulating strings are *paste*,
 *strsplit*, and *substring*. *paste* and *strsplit* are basically
-inverses of each other: *paste* concatenates together an arbitrary set
-of strings (or a vector, if using the *collapse* argument) with a
-user-specified separator character, while *strsplit* splits apart based
-on a delimiter/separator. *substring* splits apart the elements of a
-character vector based on fixed widths. *nchar* returns the number of
-characters in a string. Note that all of these operate in a vectorized
-fashion.
+inverses of each other:
+
+-   *paste* concatenates together an arbitrary set of strings (or a
+    vector, if using the *collapse* argument) with a user-specified
+    separator character
+-   *strsplit* splits apart based on a delimiter/separator
+-   *substring* splits apart the elements of a character vector based on
+    fixed widths
+-   *nchar* returns the number of characters in a string.
+
+Note that all of these operate in a vectorized fashion.
 
 ``` r
 out <- paste("My", "name", "is", "Chris", ".", sep = " ")
