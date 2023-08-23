@@ -23,21 +23,21 @@ strings in a vector at once.
 
 Here’s a [cheatsheet from
 RStudio](https://raw.githubusercontent.com/rstudio/cheatsheets/main/strings.pdf)
-on manipulating strings using the *stringr* package in R.
+on manipulating strings using the `stringr` package in R.
 
 ### 1.1 String manipulation in base R
 
-A few of the basic R functions for manipulating strings are *paste*,
-*strsplit*, and *substring*. *paste* and *strsplit* are basically
+A few of the basic R functions for manipulating strings are `paste`,
+`strsplit`, and `substring`. `paste` and `strsplit` are basically
 inverses of each other:
 
--   *paste* concatenates together an arbitrary set of strings (or a
-    vector, if using the *collapse* argument) with a user-specified
-    separator character
--   *strsplit* splits apart based on a delimiter/separator
--   *substring* splits apart the elements of a character vector based on
-    fixed widths
--   *nchar* returns the number of characters in a string.
+- `paste` concatenates together an arbitrary set of strings (or a
+  vector, if using the `collapse` argument) with a user-specified
+  separator character
+- `strsplit` splits apart based on a delimiter/separator
+- `substring` splits apart the elements of a character vector based on
+  fixed widths
+- `nchar` returns the number of characters in a string.
 
 Note that all of these operate in a vectorized fashion.
 
@@ -63,7 +63,7 @@ strsplit(out, split = ' ')
 
 > *Note*
 >
-> Some string processing functions (such as *strsplit* above) can return
+> Some string processing functions (such as `strsplit` above) can return
 > multiple values for each input string (each element of the character
 > vector). As a result, the functions will return a list, which will be
 > a list with one element when the function operates on a single string.
@@ -79,7 +79,7 @@ strsplit(out, split = ' ')
 >     ## [[2]]
 >     ## [1] "Hello"    "everyone"
 
-Here are some examples of using *substring*:
+Here are some examples of using `substring`:
 
 ``` r
 times <- c("04:18:04", "12:12:53", "13:47:00")
@@ -96,14 +96,14 @@ times
     ## [1] "04:18:04" "12:12:53" "01:47:00"
 
 To identify particular subsequences in strings, there are several
-closely-related R functions. *grep* will look for a specified string
+closely-related R functions. `grep` will look for a specified string
 within an R character vector and report back indices identifying the
 elements of the vector in which the string was found. Note that using
 the `fixed=TRUE` argument ensures that regular expressions are NOT used.
-*gregexpr* will indicate the position in each string that the specified
-string is found (use *regexpr* if you only want the first occurrence).
-*gsub* can be used to replace a specified string with a replacement
-string (use *sub* if you only want to replace only the first
+`gregexpr` will indicate the position in each string that the specified
+string is found (use `regexpr` if you only want the first occurrence).
+`gsub` can be used to replace a specified string with a replacement
+string (use `sub` if you only want to replace only the first
 occurrence).
 
 ``` r
@@ -150,26 +150,24 @@ gsub("2016", "16", dates)
 
     ## [1] "16-08-03"   "2007-09-05" "16-01-02"
 
-### 1.2 String manipulation using *stringr*
+### 1.2 String manipulation using `stringr`
 
-The *stringr* package wraps the various core string manipulation
+The `stringr` package wraps the various core string manipulation
 functions to provide a common interface. It also removes some of the
 clunkiness involved in some of the string operations with the base
-string functions, such as having to to call *gregexpr* and then
-*regmatches* to pull out the matched strings. In general, I’d suggest
-using *stringr* functions in place of R’s base string functions.
+string functions, such as having to to call `gregexpr` and then
+`regmatches` to pull out the matched strings. In general, I’d suggest
+using `stringr` functions in place of R’s base string functions.
 
-Here’s
-
-First let’s see *stringr*’s versions of some of the base R string
+First let’s see `stringr`’s versions of some of the base R string
 functions mentioned in the previous sections.
 
-The basic interface to *stringr* functions is
+The basic interface to `stringr` functions is
 `function(character_vector, pattern, [replacement])`.
 
 Table 1 provides an overview of the key functions related to working
-with patterns, which are basically wrappers for *grep*, *gsub*,
-*gregexpr*, etc.
+with patterns, which are basically wrappers for `grep`, `gsub`,
+`gregexpr`, etc.
 
 | Function                    | What it does                                                |
 |-----------------------------|-------------------------------------------------------------|
@@ -179,18 +177,18 @@ with patterns, which are basically wrappers for *grep*, *gsub*,
 | str_extract/str_extract_all | detects pattern, returning matches                          |
 | str_replace/str_replace_all | detects pattern and replaces matches                        |
 
-The analog of *regexpr* vs. *gregexpr* and *sub* vs. *gsub* is that most
+The analog of `regexpr` vs. `gregexpr` and `sub` vs. `gsub` is that most
 of the functions have versions that return all the matches, not just the
-first match, e.g. *str_locate_all* *str_extract_all*, etc. Note that the
-\*\_all\* functions return lists while the non-\*\_all\* functions
-return vectors.
+first match, e.g. `str_locate_all` `str_extract_all`, etc. Note that the
+`_all` functions return lists while the non-`_all` functions return
+vectors.
 
 To specify options, you can wrap these functions around the pattern
 argument: `fixed(pattern, ignore_case)` and
-`regex(pattern, ignore_case)`. The default is *regex*, so you only need
+`regex(pattern, ignore_case)`. The default is `regex`, so you only need
 to specify that if you also want to specify additional arguments, such
-as *ignore_case* or others listed under `help(regex)` (invoke the help
-after loading *stringr*)
+as `ignore_case` or others listed under `help(regex)` (invoke the help
+after loading `stringr`)
 
 Here’s an example:
 
@@ -267,9 +265,19 @@ str_replace_all(dates, "20[^0][0-9]", "XXXX")
 
 Let’s see basic concatenation, splitting, working with substrings, and
 searching/replacing substrings. Notice that Python’s string
-functionality is object-oriented (though *len* is not). Note: apologies
-for all the extra print statements in the code - this is required when
-running Python chunks in R Markdown.
+functionality is object-oriented (though `len` is not).
+
+Here, We’ll just cover the basic methods for the `str` type. There’s
+lots of additional functionality for working with strings in the `re`
+package, discussed [here in this
+tutorial](http://berkeley-scf.github.io/tutorial-string-processing/regex#6-using-regex-in-python).
+Of course in many cases of working with strings, one would need the full
+power of regular expressions to do what one needs to do.
+
+First let’s look at combining/concatenating strings. We can do this with
+the `+` operator or using the `join` method, which is (perhaps
+confusingly) called based on the separator of interest with the input
+strings as arguments.
 
 ``` python
 out = "My" + "name" + "is" + "Chris" +  "."
@@ -285,6 +293,8 @@ out
 
     ## 'My name is Chris .'
 
+`len` simply returns the number of characters in the string.
+
 ``` python
 len(out) 
 ```
@@ -297,8 +307,23 @@ out.split(' ')
 
     ## ['My', 'name', 'is', 'Chris', '.']
 
-Hitting tab after typing `out.` when *out* is a string will show the
-full suite of string-related methods.
+To see the various string methods, we can hit tab after typing `str.` or
+based on any specific string:
+
+``` python
+out.
+```
+
+    out.capitalize()    out.index(          out.isspace()       out.removesuffix(   out.startswith(
+    out.casefold()      out.isalnum()       out.istitle()       out.replace(        out.strip(
+    out.center(         out.isalpha()       out.isupper()       out.rfind(          out.swapcase()
+    out.count(          out.isascii()       out.join(           out.rindex(         out.title()
+    out.encode(         out.isdecimal()     out.ljust(          out.rjust(          out.translate(
+    out.endswith(       out.isdigit()       out.lower()         out.rpartition(     out.upper()
+    out.expandtabs(     out.isidentifier()  out.lstrip(         out.rsplit(         out.zfill(
+    out.find(           out.islower()       out.maketrans(      out.rstrip(         
+    out.format(         out.isnumeric()     out.partition(      out.split(          
+    out.format_map(     out.isprintable()   out.removeprefix(   out.splitlines(     
 
 Unlike in R, you cannot use the string methods directly on a list or
 tuple of strings, but you of course can do things like list
@@ -318,38 +343,36 @@ However strings are immutable - you cannot alter a subset of characters
 in the string. Another option is to work with strings as lists.
 
 ``` python
-var = list("13:47:00")
-var
+var[0:2] = "01"
 ```
 
-    ## ['1', '3', ':', '4', '7', ':', '0', '0']
-
-``` python
-var[0:2] = ["0", "1"]
-''.join(var)
-```
-
-    ## '01:47:00'
+    ## Error: TypeError: 'str' object does not support item assignment
 
 Now let’s consider finding substrings. Here Python tells us that ‘2016’
 starts in the 6th position in the first and third elements (with 0-based
 indexing).
 
 ``` python
-vars = ["08-03-2016", "09-05-2007", "01-02-2016"]
-vars[0].find('2016')
+var = "08-03-2016"
+var.find("2016")
 ```
 
     ## 6
 
-``` python
-vars[1].find('2016')
-```
-
-    ## -1
+We can count occurrences with `.count()`:
 
 ``` python
-[v.find('2016') for v in vars]
+var = "08-03-2016; 07-09-2016"
+var.count("2016")
 ```
 
-    ## [6, -1, 6]
+    ## 2
+
+And we can replace like this:
+
+``` python
+var = "13:47:00"
+var.replace("13", "01")
+```
+
+    ## '01:47:00'

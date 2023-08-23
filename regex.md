@@ -7,29 +7,29 @@ layout: default
 
 Regular expressions are a domain-specific language for finding patterns
 and are one of the key functionalities in scripting languages such as
-Perl and Python, as well as the UNIX utilities *grep*, *sed*, and *awk*.
+Perl and Python, as well as the UNIX utilities `grep`, `sed`, and `awk`.
 
 The basic idea of regular expressions is that they allow us to find
 matches of strings or patterns in strings, as well as do substitution.
 Regular expressions are good for tasks such as:
 
--   extracting pieces of text;
--   creating variables from information found in text;
--   cleaning and transforming text into a uniform format; and
--   mining text by treating documents as data.
+- extracting pieces of text;
+- creating variables from information found in text;
+- cleaning and transforming text into a uniform format; and
+- mining text by treating documents as data.
 
 ## 2 Regular expression syntax
 
 Please use one or more of the following resources to learn regular
 expression syntax.
 
--   [Our tutorial on using the bash
-    shell](https://berkeley-scf.github.io/tutorial-using-bash/regex)
--   Duncan Temple Lang (UC Davis Statistics) has written a [nice
-    tutorial](regexpr-Lang.pdf) that is part of the repository for this
-    tutorial
--   Check out Sections 9.9 and 11 of [Paul Murrell’s
-    book](http://www.stat.auckland.ac.nz/~paul/ItDT)
+- [Our tutorial on using the bash
+  shell](https://berkeley-scf.github.io/tutorial-using-bash/regex)
+- Duncan Temple Lang (UC Davis Statistics) has written a [nice
+  tutorial](regexpr-Lang.pdf) that is part of the repository for this
+  tutorial
+- Check out Sections 9.9 and 11 of [Paul Murrell’s
+  book](http://www.stat.auckland.ac.nz/~paul/ItDT)
 
 Also, see the back/second page of RStudio’s stringr cheatsheet for a
 [cheatsheet on regular
@@ -44,7 +44,7 @@ One thing that can cause headaches is differences in version of regular
 expression syntax used. As discussed in `man grep`, *extended regular
 expressions* are standard, with *basic regular expressions* providing
 somewhat less functionality and *Perl regular expressions* additional
-functionality. In R, *stringr* provides *ICU regular expressions* (see
+functionality. In R, `stringr` provides *ICU regular expressions* (see
 `help(regex)`), which are based on Perl regular expressions. More
 details can be found in the [regex Wikipedia
 page](https://en.wikipedia.org/wiki/Regular_expression).
@@ -63,7 +63,7 @@ The syntax is very concise, so it’s helpful to break down individual
 regular expressions into the component parts to understand them. As
 Murrell notes, since regex are their own language, it’s a good idea to
 build up a regex in pieces as a way of avoiding errors just as we would
-with any computer code. *str_detect* in R’s *stringr* and *re.findall*
+with any computer code. `str_detect` in R’s `stringr` and `re.findall`
 in Python are particularly useful in seeing *what* was matched to help
 in understanding and learning regular expression syntax and debugging
 your regex. As with many kinds of coding, I find that debugging my regex
@@ -71,9 +71,9 @@ is usually what takes most of my time.
 
 ## 5 Using regex in R
 
-The *grep*, *gregexpr* and *gsub* functions and their *stringr* analogs
+The `grep`, `gregexpr` and `gsub` functions and their `stringr` analogs
 are more powerful when used with regular expressions. In the following
-examples, we’ll illustrate usage of *stringr* functions, but with their
+examples, we’ll illustrate usage of `stringr` functions, but with their
 base R analogs as comments.
 
 ### 5.1 Working with patterns
@@ -409,8 +409,8 @@ str_detect(strings, "\\\\")
 
 If we are working with newlines embedded in a string, we can include the
 newline character as a regular character that is matched by a “.” by
-first creating the regular expression with *stringr::regex* with the
-*dotall* argument set to `TRUE`:
+first creating the regular expression with `stringr::regex` with the
+`dotall` argument set to `TRUE`:
 
 ``` r
 myex <- regex("<p>.*</p>", dotall = TRUE)
@@ -455,7 +455,7 @@ str_split(line, "[[:blank:]]+")
 
 ### 6.1 Working with patterns
 
-For working with regex in Python, we’ll need the *re* package. It
+For working with regex in Python, we’ll need the `re` package. It
 provides Perl-style regular expressions, but it doesn’t seem to support
 named character classes such as `[:digit:]`. Instead use classes such as
 `\d` and `[0-9]`.
