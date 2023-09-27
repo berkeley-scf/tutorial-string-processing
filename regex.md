@@ -468,9 +468,8 @@ get information about what was matched and where in the string.
 
 ``` python
 import re
-text = ["Here's my number: 919-543-3300.", "hi John, good to meet you",
-          "They bought 731 bananas", "Please call 919.554.3800"]
-m = re.search("\d+", text[0])
+text = "Here's my number: 919-543-3300."
+m = re.search("\d+", text)
 m
 ```
 
@@ -500,11 +499,12 @@ m.span()
 
     ## (18, 21)
 
+Notice that that showed us only the first match.
+
+We can instead use `findall` to get all the matches.
+
 ``` python
-import re
-text = ["Here's my number: 919-543-3300.", "hi John, good to meet you",
-          "They bought 731 bananas", "Please call 919.554.3800"]
-re.findall("\d+", text[0])
+re.findall("\d+", text)
 ```
 
     ## ['919', '543', '3300']
@@ -518,6 +518,10 @@ re.findall("hat", str, re.IGNORECASE)
 ```
 
     ## ['hat', 'Hat']
+
+There are several other regex flags (also called compilation flags) that
+can control the behavior of the matching engine in interesting ways
+(check out re.VERBOSE and re.MULTILINE for instance).
 
 We can of course use list comprehension to work with multiple strings.
 But we need to be careful to check whether a match was found.
@@ -539,7 +543,7 @@ def return_group(pattern, txt):
 
     ## ['919', None, '731', '919']
 
-Next, let’s look at replacing patterns.
+Next, let’s look at replacing patterns, using `re.sub`.
 
 ``` python
 import re
@@ -550,30 +554,130 @@ re.sub("\d", "Z", text[0])
 
     ## "Here's my number: ZZZ-ZZZ-ZZZZ."
 
+Next let’s consider grouping using `()`.
+
+Here’s a basic example of using grouping via parentheses with the OR
+operator (`|`).
+
 ``` python
-import re
+text = "At the site http://www.ibm.com. Some other text. ftp://ibm.com"
+re.search("(http|ftp):\\/\\/", text).group()
+```
+
+    ## 'http://'
+
+However, if we want to find all the matches and try to use `findall`, we
+see that it returns only the captured groups when grouping operators are
+present, as discussed a bit in `help(re.findall)`, so we’d need to add
+an additional grouping operator to capture the full pattern when using
+`findall`:
+
+``` python
+re.findall("(http|ftp):\\/\\/", text)  
+```
+
+    ## ['http', 'ftp']
+
+``` python
+re.findall("((http|ftp):\\/\\/)", text)  
+```
+
+    ## [('http://', 'http'), ('ftp://', 'ftp')]
+
+When you are searching for all occurrences of a pattern in a large text
+object, it may be beneficial to use `finditer`:
+
+``` python
+it = re.finditer("(http|ftp):\\/\\/", text)  # http or ftp followed by ://
+
+for match in it:
+    match.span()
+```
+
+    ## (12, 19)
+    ## (49, 55)
+
+This method behaves lazily and returns an iterator that gives us one
+match at a time, and only scans for the next match when we ask for it.
+
+Groups are also used when we need to reference back to a detected
+pattern when doing a replacement. This is why they are sometimes
+referred to as “capturing groups”. For example, here we’ll find any
+numbers and add underscores before and after them:
+
+``` python
+text = "Here's my number: 919-543-3300. They bought 731 bananas. Please call 919.554.3800."
+re.sub("([0-9]+)", "_\\1_", text)
+```
+
+    ## "Here's my number: _919_-_543_-_3300_. They bought _731_ bananas. Please call _919_._554_._3800_."
+
+Here we’ll remove commas not used as field separators by replacing all
+commas except those occurring after another comma or after a quotation
+mark. This is an attempt to remove all commas not used as field
+delimiters.
+
+``` python
 text = '"H4NY07011","ACKERMAN, GARY L.","H","$13,242",,,'
 re.sub("([^\",]),", "\\1", text)
 ```
 
     ## '"H4NY07011","ACKERMAN GARY L.","H","$13242",,,'
 
-Finally, let’s see the consequences of greedy matching and use of `?` to
-avoid greeding matching.
+How does that work? Consider that “\[^\\",\]” matches a character that
+is not a quote and not a comma. The regex is therefore such a non-quote,
+non-comma character followed by a comma, with the matched character
+saved in `\\1` because of the grouping operator.
+
+Groups can also be given names, instead of having to refer to them by
+their numbers, but we will not demonstrate this here.
+
+Finally, let’s consider where a match ends when there is ambiguity.
+
+As a simple example consider that if we try this search, we match as
+many digits as possible, rather than returning the first “9” as
+satisfying the request for “one or more” digits.
 
 ``` python
-import re
+text = "See the 998 balloons."
+re.findall("\d+", text)
+```
+
+    ## ['998']
+
+That behavior is called *greedy* matching, and it’s the default. That
+example also shows why it is the default. What would happen if it were
+not the default?
+
+However, sometimes greedy matching doesn’t get us what we want.
+
+Consider this attempt to remove multiple html tags from a string.
+
+``` python
 text = "Do an internship <b> in place </b> of <b> one </b> course."
 re.sub("<.*>", "", text)
 ```
 
     ## 'Do an internship  course.'
 
+Notice what happens because of greedy matching.
+
+One way to avoid greedy matching is to use a `?` after the repetition
+specifier.
+
 ``` python
 re.sub("<.*?>", "", text)
 ```
 
     ## 'Do an internship  in place  of  one  course.'
+
+However, that syntax is a bit frustrating because `?` is also used to
+indicate 0 or 1 repetitions, making the regex a bit hard to
+read/understand.
+
+> **Challenge**: Suppose I want to strip out HTML tags but without using
+> the `?` to avoid greedy matching. How can I be more careful in
+> constructing my regex?
 
 ### 6.2 ‘Escaping’ special characters
 
