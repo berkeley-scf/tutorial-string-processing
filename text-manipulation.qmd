@@ -1,5 +1,17 @@
 ---
 title: Basic text manipulation in R and Python
+format:
+  html:
+    theme: cosmo
+    css: assets/styles.css
+    toc: true
+    code-copy: true
+    code-block-bg: true
+    code-block-border-left: "#31BAE9" 
+ipynb-shell-interactivity: all
+code-overflow: wrap
+execute:
+  freeze: auto
 ---
 
 ## 1 Overview
@@ -13,14 +25,15 @@ a character vector is a vector of one or more such strings.
 Some of the basic things we need to do are paste/concatenate strings together,
 split strings apart, take subsets of strings, and replace characters within strings.
 Often these operations are done based on patterns rather than a fixed string 
-sequence. This involves the use of regular expressions, covered in Section 3.
+sequence. This involves the use of [regular expressions](regex.qmd).
 
 ## 2 R
 
 In general, strings in R are stored in character vectors. R's functions for string manipulation are fully vectorized and will work on all of the strings in a vector at once.
 
+One can do string manipulation in base R or using the `stringr` package. In general, I'd suggest using `stringr` functionsin place of R's base string functions.
 
-Here's a [cheatsheet from RStudio](https://raw.githubusercontent.com/rstudio/cheatsheets/main/strings.pdf) on manipulating strings using the `stringr` package in R.
+
 
 ### 2.1 String manipulation in base R
 
@@ -99,10 +112,11 @@ The `stringr` package wraps the various core string manipulation
 functions to provide a common interface. It also removes some of the
 clunkiness involved in some of the string operations with the base
 string functions, such as having to to call `gregexpr` and
-then `regmatches` to pull out the matched strings. In general, I'd suggest using `stringr` functions
-in place of R's base string functions.
+then `regmatches` to pull out the matched strings.
 
-First let's see `stringr`'s versions of some of the base R string functions mentioned in the previous sections.
+Here's a [cheatsheet from RStudio](https://raw.githubusercontent.com/rstudio/cheatsheets/main/strings.pdf) on manipulating strings using the `stringr` package in R.
+
+First let's see `stringr`'s versions of some of the base R string functions mentioned in the previous section.
 
 The basic interface to `stringr` functions is `function(character_vector, pattern, [replacement])`. 
 
@@ -120,7 +134,7 @@ wrappers for `grep`, `gsub`, `gregexpr`, etc.
 
 The analog of `regexpr` vs. `gregexpr` and `sub`
 vs. `gsub` is that most of the functions have versions that
-return all the matches, not just the first match, e.g. `str_locate_all`
+return all the matches, not just the first match, e.g., `str_locate_all`, 
 `str_extract_all`, etc. Note that the `_all` functions return
 lists while the non-`_all` functions return vectors.
 
@@ -155,12 +169,12 @@ str_extract_all(dates, "20[^0][0-9]")
 str_replace_all(dates, "20[^0][0-9]", "XXXX")
 ```
 
-## 3 Basic text manipulation in Python
+## 3 Python
 
 Let's see basic concatenation, splitting, working with substrings, and searching/replacing 
 substrings. Notice that Python's string functionality is object-oriented (though `len` is not).
 
-Here, We'll just cover the basic methods for the `str` type. There's lots of additional functionality for working with strings in the `re` package, discussed [here in this tutorial](http://berkeley-scf.github.io/tutorial-string-processing/regex#6-using-regex-in-python). Of course in many cases of working with strings, one would need the full power of regular expressions to do what one needs to do.
+Here, we'll just cover the basic methods for the `str` type. There's lots of additional functionality for [working with strings using regular expressions in the `re` package](regex.qmd#using-regex-in-python). Of course in many cases of working with strings, one would need the full power of regular expressions to do what one needs to do.
 
 First let's look at combining/concatenating strings. We can do this with the `+` operator
 or using the `join` method, which is (perhaps confusingly) called based on the separator
