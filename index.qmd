@@ -1,21 +1,16 @@
 ---
 title: String processing
-layout: default
-author: Christopher Paciorek
+date: 2025-06-20
 ---
 
-# String processing 
+This tutorial covers tools for manipulating text data in R and Python, including the use of regular expressions. The tutorial is somewhat more focused on R than Python.  Please click on the links on the left the various sections of this tutorial.
 
 Please see the top menu bar for the various sections of this tutorial, of which this document is the introduction.
-
-This tutorial covers tools for manipulating text data in R and Python, including the use of regular expressions. The tutorial is somewhat more focused on R than Python.
 
 If you have a standard R or Python installation and can install the `stringr` package for R and the `re` package for Python, you should be able to reproduce the results in this document.
 
 This tutorial assumes you have a working knowledge of R or Python. 
 
 Materials for this tutorial, including the Markdown file that was used to create this document are [available on GitHub](https://github.com/berkeley-scf/tutorial-string-processing).
-
-This tutorial by Christopher Paciorek is licensed under a Creative Commons Attribution 3.0 Unported License.
 
 

@@ -1,6 +1,5 @@
 ---
 title: Using regular expression in R and Python 
-layout: default
 ---
 
 
@@ -101,7 +100,10 @@ str_replace_all(text, "[[:digit:]]", "X")
 ## gsub("[[:digit:]]", "X", text)
 ```
 
-Challenge: how would we find a spam-like pattern with digits or non-letters inside a word? E.g., I want to find "V1agra" or "Fancy repl!c@ted watches".
+::: {.callout-tip title="Challenge"}
+
+How would we find a spam-like pattern with digits or non-letters inside a word? E.g., I want to find "V1agra" or "Fancy repl!c@ted watches".
+:::
 
 Next let's consider location-specific matches.
 
@@ -137,7 +139,10 @@ str_extract_all(text, pattern)
 ## regmatches(text, matches)
 ```
 
-Challenge: How would I extract an email address from an arbitrary text string?
+::: {.callout-tip title="Challenge"}
+
+How would I extract an email address from an arbitrary text string?
+:::
 
 Next consider grouping.
 
@@ -152,7 +157,9 @@ str_extract_all(text, "(1[-.])?([[:digit:]]{3}[-.]){1,2}[[:digit:]]{4}")
 ## regmatches(text, matches)
 ```
 
-Challenge: the above pattern would actually match something that is not a valid phone number. What can go wrong?
+::: {.callout-tip title="Challenge"}
+The above pattern would actually match something that is not a valid phone number. What can go wrong?
+:::
 
 Here's a basic example of using grouping via parentheses with the OR operator.
 
@@ -188,9 +195,25 @@ cat(clean_text)
 ## gsub("([^\",]),", "\\1", text)
 ```
 
-Challenge: Suppose a text string has dates in the form “Aug-3”, “May-9”, etc. and I want them in the form “3 Aug”, “9 May”, etc. How would I do this search/replace?
+::: {.callout-tip title="Challenge"}
+Suppose a text string has dates in the form “Aug-3”, “May-9”, etc. and I want them in the form “3 Aug”, “9 May”, etc. How would I do this search/replace?
+:::
 
-Finally let's consider greedy matching.
+Finally, let's consider where a match ends when there is ambiguity.
+
+As a simple example consider that if we try this search, we match as many digits as possible, rather than returning the first "9" as satisfying the request for "one or more" digits.
+
+```{python}
+text = "See the 998 balloons."
+str_extract(text, "\d+")
+```
+
+That behavior is called *greedy* matching, and it's the default. That example also shows why it
+is the default. What would happen if it were not the default?
+
+However, sometimes greedy matching doesn't get us what we want.
+
+Consider this attempt to remove multiple html tags from a string.
 
 
 ```{r}
@@ -201,7 +224,7 @@ str_replace_all(text, "<.*>", "")
 ## gsub("<.*>", "", text)
 ```
 
-What went wrong?
+Notice what happens because of greedy matching.
 
 One solution is to append a ? to the repetition syntax to cause the matching to be non-greedy. Here's an example.
 
@@ -214,7 +237,9 @@ str_replace_all(text, "<.*?>", "")
 
 However, one can often avoid greedy matching by being more clever. 
 
-Challenge: How could we change our regexp to avoid the greedy matching without using the “?”?
+::: {.callout-tip title="Challenge"}
+How could we change our regex to avoid the greedy matching without using the “?”?
+:::
 
 ### 5.2 'Escaping' special characters
 
@@ -430,10 +455,12 @@ re.sub("<.*?>", "", text)
 However, that syntax is a bit frustrating because `?` is also used to indicate
 0 or 1 repetitions, making the regex a bit hard to read/understand.
 
-> **Challenge**: Suppose I want to strip out HTML tags but without using the `?` to avoid
+::: {.callout-tip title="Challenge"}
+
+Suppose I want to strip out HTML tags but without using the `?` to avoid
 greedy matching. How can I be more careful in constructing my regex?
 
-
+:::
 
 ### 6.2 'Escaping' special characters
 
