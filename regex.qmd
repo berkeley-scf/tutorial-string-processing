@@ -197,7 +197,7 @@ text <- c("Here's my number: 919-543-3300.", "hi John, good to meet you",
 str_replace_all(text, "([0-9]+)", "_\\1_")   # place underscores around all numbers
 ```
 
-One uses the '\\1' to refer back to the first group that was matched based on the parentheses. One can have multiple groups and refer to them with '\\2', '\\3', etc.
+One uses the `\\1` to refer back to the first group that was matched based on the parentheses. One can have multiple groups and refer to them with `\\2`, `\\3`, etc.
 
 Here we'll remove commas not used as field separators.
 
