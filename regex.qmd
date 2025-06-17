@@ -35,7 +35,7 @@ Regular expressions are good for tasks such as:
 
 Please use one or more of the following resources to learn regular expression syntax.
 
-- [Our tutorial on using the bash shell](https://berkeley-scf.github.io/tutorial-using-bash/regex)
+- [Our tutorial on using the bash shell](https://computing.stat.berkeley.edu/tutorial-using-bash/regex)
 - Duncan Temple Lang (UC Davis Statistics) has written a [nice tutorial](regexpr-Lang.pdf) that is part of the repository for this tutorial
 - Check out Sections 9.9 and 11 of [Paul Murrell's book](http://www.stat.auckland.ac.nz/~paul/ItDT)
 
@@ -43,10 +43,14 @@ Also, see the back/second page of RStudio's stringr cheatsheet for a [cheatsheet
 
 ## 3 Versions of regular expressions
 
+::: {.callout-danger title="Regex versions"}
+
 One thing that can cause headaches is differences in version of regular expression syntax used. As discussed in `man grep`, *extended regular expressions* are standard, with *basic regular expressions* providing somewhat less functionality and *Perl regular expressions* additional functionality. 
 In R, `stringr` provides *ICU regular expressions* (see `help(regex)`), which are based on Perl regular expressions. More details can be found in the [regex Wikipedia page](https://en.wikipedia.org/wiki/Regular_expression).
 
-The [bash shell tutorial](https://berkeley-scf.github.io/tutorial-using-bash/regex) provides a full documentation of the various *extended regular expressions* syntax, which we'll focus on here. This should be sufficient for most usage and should be usable in R and Python, but if you notice something funny going on, it might be due to differences between the regular expressions versions. 
+:::
+
+The [bash shell tutorial](https://computing.stat.berkeley.edu/tutorial-using-bash/regex) provides a full documentation of the various *extended regular expressions* syntax, which we'll focus on here. This should be sufficient for most usage and should be usable in R and Python, but if you notice something funny going on, it might be due to differences between the regular expressions versions. 
 
 ## 4 General principles for working with regex
 
@@ -192,6 +196,8 @@ text <- c("Here's my number: 919-543-3300.", "hi John, good to meet you",
           "They bought 731 bananas", "Please call 919.554.3800")
 str_replace_all(text, "([0-9]+)", "_\\1_")   # place underscores around all numbers
 ```
+
+One uses the '\\1' to refer back to the first group that was matched based on the parentheses. One can have multiple groups and refer to them with '\\2', '\\3', etc.
 
 Here we'll remove commas not used as field separators.
 
