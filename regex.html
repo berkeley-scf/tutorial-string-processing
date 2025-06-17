@@ -235,7 +235,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="regular-expression-syntax">2 Regular expression syntax</h2>
 <p>Please use one or more of the following resources to learn regular expression syntax.</p>
 <ul>
-<li><a href="https://berkeley-scf.github.io/tutorial-using-bash/regex">Our tutorial on using the bash shell</a></li>
+<li><a href="https://computing.stat.berkeley.edu/tutorial-using-bash/regex">Our tutorial on using the bash shell</a></li>
 <li>Duncan Temple Lang (UC Davis Statistics) has written a <a href="regexpr-Lang.pdf">nice tutorial</a> that is part of the repository for this tutorial</li>
 <li>Check out Sections 9.9 and 11 of <a href="http://www.stat.auckland.ac.nz/~paul/ItDT">Paul Murrell’s book</a></li>
 </ul>
@@ -243,8 +243,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="versions-of-regular-expressions" class="level2">
 <h2 class="anchored" data-anchor-id="versions-of-regular-expressions">3 Versions of regular expressions</h2>
+<div class="callout-danger" title="Regex versions">
 <p>One thing that can cause headaches is differences in version of regular expression syntax used. As discussed in <code>man grep</code>, <em>extended regular expressions</em> are standard, with <em>basic regular expressions</em> providing somewhat less functionality and <em>Perl regular expressions</em> additional functionality. In R, <code>stringr</code> provides <em>ICU regular expressions</em> (see <code>help(regex)</code>), which are based on Perl regular expressions. More details can be found in the <a href="https://en.wikipedia.org/wiki/Regular_expression">regex Wikipedia page</a>.</p>
-<p>The <a href="https://berkeley-scf.github.io/tutorial-using-bash/regex">bash shell tutorial</a> provides a full documentation of the various <em>extended regular expressions</em> syntax, which we’ll focus on here. This should be sufficient for most usage and should be usable in R and Python, but if you notice something funny going on, it might be due to differences between the regular expressions versions.</p>
+</div>
+<p>The <a href="https://computing.stat.berkeley.edu/tutorial-using-bash/regex">bash shell tutorial</a> provides a full documentation of the various <em>extended regular expressions</em> syntax, which we’ll focus on here. This should be sufficient for most usage and should be usable in R and Python, but if you notice something funny going on, it might be due to differences between the regular expressions versions.</p>
 </section>
 <section id="general-principles-for-working-with-regex" class="level2">
 <h2 class="anchored" data-anchor-id="general-principles-for-working-with-regex">4 General principles for working with regex</h2>
@@ -452,6 +454,7 @@ Challenge
 [4] "Please call _919_._554_._3800_"       </code></pre>
 </div>
 </div>
+<p>One uses the ‘\1’ to refer back to the first group that was matched based on the parentheses. One can have multiple groups and refer to them with ‘\2’, ‘\3’, etc.</p>
 <p>Here we’ll remove commas not used as field separators.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>text <span class="ot">&lt;-</span> (<span class="st">'"H4NY07011","ACKERMAN, GARY L.","H","$13,242",,,'</span>)</span>
